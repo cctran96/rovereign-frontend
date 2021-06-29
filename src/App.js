@@ -1,5 +1,6 @@
 import React from "react"
-import "./App.css"
+import {BrowserRouter as Router, Route} from "react-router-dom"
+import Navbar from "./components/Navbar"
 
 const App = () => {
     const importImages = (r) => {
@@ -10,9 +11,10 @@ const App = () => {
 
 
     return (
-        <div className="sprite">
-
-        </div>
+        <Router>
+            <Navbar/>
+            <Route/>
+        </Router>
     )
 }
 
