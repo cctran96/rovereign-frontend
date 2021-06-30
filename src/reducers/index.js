@@ -6,6 +6,8 @@ const rootReducer = combineReducers({
 
 export default rootReducer
 
+
+
 const obj = {
     minotaur: {
         size: "720x490",

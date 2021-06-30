@@ -2,7 +2,7 @@ import React from "react"
 
 const Game = () => {
     return (
-        <div>
+        <div className="page-container">
             
         </div>
     )

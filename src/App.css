@@ -1,7 +1,15 @@
+:root {
+    --height: calc(100vh - 55px)
+}
+
 body {
-    height: calc(100vh - 55px);
+    height: var(--height);
     margin: 0px !important;
     font-family: Arial, Helvetica, sans-serif;
+}
+
+body::-webkit-scrollbar {
+    width: 0;
 }
 
 .ani-logo {
@@ -19,20 +27,14 @@ body {
 }
 
 .navbar {
-    height: 55px;
-    position: fixed;
-    background: darkslateblue;
-    left: 0;
-    right: 0;
-    top: 0;
-}
-
-nav {
+    z-index: 9998;
     height: 55px;
     position: fixed;
     background: darkslateblue;
     display: flex;
     align-items: center;
+    left: 0;
+    right: 0;
 }
 
 .logo {
@@ -50,8 +52,9 @@ nav {
     list-style: none;
     display: flex;
     margin-left: auto;
+    margin-right: 20px;
     width: 450px;
-    justify-content: space-between;
+    justify-content: space-around;
 }
 
 .menu-links {
@@ -101,7 +104,7 @@ nav {
 .link-container {
     display: flex;
     flex-direction: column;
-    background: darkslateblue;
+    background: rgba(71, 61, 138, 0.95);
     float: right;
     width: 300px;
     height: 100%
@@ -121,3 +124,94 @@ nav {
     transition: 0.5s;
 }
 
+.login-page {
+    height: var(--height);
+    min-height: 565px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+.login-container {
+    margin-top: 60px;
+    width: 900px;
+    min-height: 480px;
+    margin-right: 20px;
+    margin-left: 20px;
+    border-radius: 10px;
+    position: relative;
+    display: flex;
+    box-shadow: 0 14px 28px rgba(0,0,0,0.25), 
+    0 10px 10px rgba(0,0,0,0.22);
+}
+
+.form-container {
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    align-items: center;
+    text-align: center;
+    background: whitesmoke;
+}
+
+.form-container form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.field-container{
+    width: clamp(200px, 60%, 500px);
+    height: 35px;
+    border: 3px solid black;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    display: flex;
+}
+
+.field-container input {
+    border: none;
+    height: 100%;
+    width: 100%;
+    font-size: 15px;
+    border-left: 3px solid black;
+}
+
+.field-container input:focus {
+    outline: none;
+}
+
+.overlay {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    display: flex;
+    height: 100%;
+    background-image: url("https://i.imgur.com/RnwnIzX.gif");
+    background-size: cover;
+    border-radius: 10px;
+    width: 100%;
+}
+
+.left, .right {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: whitesmoke;
+}
+
+.login {
+    border-radius: 0 10px 10px 0;
+    padding-top: 50px;
+}
+
+.signup {
+    border-radius: 10px 0 0 10px;
+}
