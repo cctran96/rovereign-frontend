@@ -106,7 +106,7 @@ body::-webkit-scrollbar {
     flex-direction: column;
     background: rgba(71, 61, 138, 0.95);
     float: right;
-    width: 300px;
+    width: clamp(250px, 50%, 300px);
     height: 100%
 }
 
@@ -214,4 +214,18 @@ body::-webkit-scrollbar {
 
 .signup {
     border-radius: 10px 0 0 10px;
+}
+
+.login-container button {
+    padding: 10px;
+    border: none;
+    box-shadow: inset 0 -0.6em 0 -0.35em rgba(0,0,0,0.17);
+    background-color: #0730a1;
+    color: white;
+    font-weight: 400;
+    border-radius: 2px;
+}
+
+.login-container button:focus {
+    transform: scale(0.90);
 }
