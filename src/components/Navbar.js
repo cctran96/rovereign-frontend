@@ -88,7 +88,7 @@ export default Navbar
 const activeStyle = {
     fontWeight: "bold",
     color: "#add8e6",
-    transform: "scale(1.5)"
+    fontSize: "21px"
 }
 
 const openVar = {
