@@ -2,6 +2,8 @@ import React, { useState } from "react"
 import { motion } from "framer-motion"
 import { AiOutlineUser, AiOutlineLock } from "react-icons/ai/index.esm"
 
+const usersURL = "http://localhost:3000/api/v1/users"
+
 const Login = () => {
     // Displays either login form or signup form
     const [showLogin, setShowLogin] = useState(true)
@@ -25,16 +27,39 @@ const Login = () => {
         setSignUpForm({username: "", password: "", confirm: ""})
     }
 
+    const sendAuth = body => {
+        const config = {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(body)
+        }
+        fetch(usersURL, config)
+        .then(r => r.json())
+        .then(data => {
+            console.log(data)
+        })
+    }
+
+    const handleSubmitCredentials = e => {
+        e.preventDefault()
+        if (e.target.className === "signup-form") {
+            
+        } else {
+
+        }
+    }
 
     return (
-        <div className="login-page">
+        <motion.div className="login-page" initial="start" animate="end" variants={pageVar}>
             <motion.div className="login-container" animate={showLogin ? "login" : "signup"}>
                 <motion.div 
                     className="form-container signup"
                     variants={signupVar}
                 >
                     <h1>Welcome Aboard!</h1>
-                    <form>
+                    <form className="signup-form" onSubmit={handleSubmitCredentials}>
                         <div className="field-container">
                             <AiOutlineUser size={30}/>
                             <input
@@ -75,7 +100,7 @@ const Login = () => {
                     variants={loginVar}
                 >
                     <h1>Welcome Back!</h1>
-                    <form>
+                    <form className="login-form" onSubmit={handleSubmitCredentials}>
                         <div className="field-container">
                             <AiOutlineUser size={30}/>
                             <input
@@ -111,7 +136,7 @@ const Login = () => {
                     </motion.div>
                 </div>
             </motion.div>
-        </div>
+        </motion.div>
     )
 }
 
@@ -148,23 +173,16 @@ const signupVar = {
 }
 
 const leftVar = {
-    login: {
-        opacity: 1,
-        transition: {duration: 0.5, delay: 0.2}
-    },
-    signup: {
-        opacity: 0,
-        transition: {duration: 0.5, delay: 0.2}
-    }
+    login: {opacity: 1, transition: {duration: 0.5, delay: 0.2}},
+    signup: {opacity: 0, transition: {duration: 0.5, delay: 0.2}}
 }
 
 const rightVar = {
-    login: {
-        opacity: 0,
-        transition: {duration: 0.5, delay: 0.2}
-    },
-    signup: {
-        opacity: 1,
-        transition: {duration: 0.5, delay: 0.2}
-    }
+    login: {opacity: 0, transition: {duration: 0.5, delay: 0.2}},
+    signup: {opacity: 1, transition: {duration: 0.5, delay: 0.2}}
+}
+
+const pageVar ={ 
+    start: {opacity: 0, y: -100},
+    end: {opacity: 1, y: 0, transition: {duration: 0.5}}
 }
