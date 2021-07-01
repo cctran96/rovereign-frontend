@@ -1,10 +1,11 @@
 import React, { useState } from "react"
+import { useDispatch, useSelector } from "react-redux"
 import { motion } from "framer-motion"
 import { AiOutlineUser, AiOutlineLock } from "react-icons/ai/index.esm"
+import { fetchSignup, fetchLogin } from "../actions/accountActions"
+import { useHistory } from "react-router-dom"
 
-const usersURL = "http://localhost:3000/api/v1/users"
-
-const Login = () => {
+const Login = (props) => {
     // Displays either login form or signup form
     const [showLogin, setShowLogin] = useState(true)
     
@@ -12,6 +13,15 @@ const Login = () => {
     const [loginForm, setLoginForm] = useState({username: "", password: ""})
     const [signupForm, setSignUpForm] = useState({username: "", password: "", confirm: ""})
     
+    // Sets useDispatch and useHistory to a variable
+    const dispatch = useDispatch()
+    const history = useHistory()
+
+    // Grab errors from state and parses it
+    const errors = useSelector(state => state.user.errors)
+    const findError = field => errors ? errors.find(obj => obj[field]) : null
+    const errorList = errors ? errors.map(obj => Object.values(obj)) : null
+
     const handleLoginChange = e => {
         setLoginForm({...loginForm, [e.target.name]: e.target.value})
     }
@@ -25,29 +35,15 @@ const Login = () => {
         setShowLogin(!showLogin)
         setLoginForm({username: "", password: ""})
         setSignUpForm({username: "", password: "", confirm: ""})
-    }
-
-    const sendAuth = body => {
-        const config = {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(body)
-        }
-        fetch(usersURL, config)
-        .then(r => r.json())
-        .then(data => {
-            console.log(data)
-        })
+        dispatch({ type: "ERROR", errors: false })
     }
 
     const handleSubmitCredentials = e => {
         e.preventDefault()
         if (e.target.className === "signup-form") {
-            
+            dispatch(fetchSignup(signupForm, history))
         } else {
-
+            dispatch(fetchLogin(loginForm, history))
         }
     }
 
@@ -58,11 +54,12 @@ const Login = () => {
                     className="form-container signup"
                     variants={signupVar}
                 >
-                    <h1>Welcome Aboard!</h1>
+                    <h1>Start Your Journey!</h1>
                     <form className="signup-form" onSubmit={handleSubmitCredentials}>
-                        <div className="field-container">
+                        <div className={`field-container ${findError("username") ? "error" : null}`}>
                             <AiOutlineUser size={30}/>
                             <input
+                                className={findError("username") ? "error" : null}
                                 onChange={handleSignupChange}
                                 name="username" 
                                 placeholder="Username" 
@@ -70,9 +67,10 @@ const Login = () => {
                                 required
                             />
                         </div>
-                        <div className="field-container">
+                        <div className={`field-container ${findError("password") ? "error" : null}`}>
                             <AiOutlineLock size={30}/>
                             <input 
+                                className={findError("password") ? "error" : null}
                                 onChange={handleSignupChange}
                                 name="password" 
                                 placeholder="Password"
@@ -81,9 +79,10 @@ const Login = () => {
                                 required
                             />
                         </div>
-                        <div className="field-container">
+                        <div className={`field-container ${findError("confirm") ? "error" : null}`}>
                             <AiOutlineLock size={30}/>
                             <input 
+                                className={findError("confirm") ? "error" : null}
                                 onChange={handleSignupChange}
                                 name="confirm" 
                                 placeholder="Confirm Password"
@@ -93,17 +92,23 @@ const Login = () => {
                             />
                         </div>
                         <button type="submit">SIGN UP</button>
+                        {   errorList ?
+                            <motion.div className="error-container" variants={errorVar} initial="start" animate="end">
+                                {errorList.map(error => <p>{error}</p>)}
+                            </motion.div> : null
+                        }
                     </form>
                 </motion.div>
                 <motion.div 
                     className="form-container login"
                     variants={loginVar}
                 >
-                    <h1>Welcome Back!</h1>
+                    <h1>Continue Your Journey!</h1>
                     <form className="login-form" onSubmit={handleSubmitCredentials}>
-                        <div className="field-container">
+                        <div className={`field-container ${findError("both") ? "error" : null}`}>
                             <AiOutlineUser size={30}/>
                             <input
+                                className={findError("both") ? "error" : null}
                                 onChange={handleLoginChange}
                                 name="username" 
                                 placeholder="Username" 
@@ -111,9 +116,10 @@ const Login = () => {
                                 required
                             />
                         </div>
-                        <div className="field-container">
+                        <div className={`field-container ${findError("both") ? "error" : null}`}>
                             <AiOutlineLock size={30}/>
                             <input
+                                className={findError("both") ? "error" : null}
                                 onChange={handleLoginChange}
                                 name="password" 
                                 placeholder="Password"
@@ -123,6 +129,11 @@ const Login = () => {
                             />
                         </div>
                         <button type="submit">SIGN IN</button>
+                        {   errorList ?
+                            <motion.div className="error-container" variants={errorVar} initial="start" animate="end">
+                                {errorList.map(error => <p>{error}</p>)}
+                            </motion.div> : null
+                        }
                     </form>
                 </motion.div>
                 <div className="overlay">
@@ -141,6 +152,7 @@ const Login = () => {
 }
 
 export default Login
+
 
 const loginVar = {
     login: {
@@ -182,7 +194,12 @@ const rightVar = {
     signup: {opacity: 1, transition: {duration: 0.5, delay: 0.2}}
 }
 
-const pageVar ={ 
+const pageVar = { 
     start: {opacity: 0, y: -100},
+    end: {opacity: 1, y: 0, transition: {duration: 0.5}}
+}
+
+const errorVar = {
+    start: {opacity: 0, y: 100},
     end: {opacity: 1, y: 0, transition: {duration: 0.5}}
 }

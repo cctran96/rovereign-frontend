@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react"
-import { NavLink } from "react-router-dom"
+import { useSelector, useDispatch } from "react-redux"
+import { NavLink, useHistory } from "react-router-dom"
 import { motion } from "framer-motion"
 import { debounce } from "../helpers/debounce"
 import { ReactComponent as Logo } from "../logo/Logo.svg"
@@ -14,6 +15,12 @@ const Navbar = () => {
     const [collapse, setCollapse] = useState(width < 750)
     const toggleNav = () => setIsOpen(!isOpen)
     
+    // Grab state from store and sets useDispatch and useHistory to a variable
+    const user = useSelector(state => state.user.user)
+    const dispatch = useDispatch()
+    const history = useHistory()
+
+    // Checks for resize of the screen to collapse the navbar
     const handleResize = debounce(() => {
         const screenWidth = window.innerWidth
         setCollapse(screenWidth < 750)
@@ -26,8 +33,21 @@ const Navbar = () => {
         return () => window.removeEventListener("resize", handleResize)
     }, [width, collapse, handleResize])
 
+    // Closes nav menu when you click outside of the menu
     const handleCloseMenu = e => {
         if (e.target.className === ("nav-menu open")) toggleNav()
+    }
+
+    // Logs user out
+    const handleLogout = () => {
+        dispatch({ type: "LOGIN", user: false })
+        localStorage.removeItem("jwt")
+        history.replace("/login")
+    }
+
+    // Resets error state when changing routes
+    const resetError = () => {
+        dispatch({ type: "ERROR", errors: false })
     }
 
     return (
@@ -35,14 +55,20 @@ const Navbar = () => {
             <a href="/">
                 <div className="logo">
                     <Logo/>
+                    <h1>{user ? `${user.username}` : null}</h1>
                 </div>
             </a>
             {   collapse ? null :
                 <ul className="navlinks">
-                    <li><NavLink activeStyle={activeStyle} exact to="/">Home</NavLink></li>
-                    <li><NavLink activeStyle={activeStyle} exact to="/collection">Collection</NavLink></li>
-                    <li><NavLink activeStyle={activeStyle} exact to="/play">Play</NavLink></li>
-                    <li><NavLink activeStyle={activeStyle} exact to="/login">Login</NavLink></li>
+                    <li><NavLink onClick={resetError} activeStyle={activeStyle} exact to="/">Home</NavLink></li>
+                    <li><NavLink onClick={resetError} activeStyle={activeStyle} exact to="/collection">Collection</NavLink></li>
+                    <li><NavLink onClick={resetError} activeStyle={activeStyle} exact to="/play">Play</NavLink></li>
+                    <li>
+                        {   user ?
+                            <button onClick={handleLogout} href="#">Logout</button> :
+                            <NavLink onClick={resetError} activeStyle={activeStyle} exact to="/login">Login</NavLink>
+                        }
+                    </li>
                 </ul>
             }
             {   collapse ? 
@@ -65,16 +91,19 @@ const Navbar = () => {
                     </motion.div>
                     <motion.ul className="menu-links" animate={isOpen ? "open" : "closed"}>
                         <motion.li variants={liVar(1)}>
-                            <NavLink activeStyle={activeStyle} exact to="/">Home</NavLink>
+                            <NavLink onClick={resetError} activeStyle={activeStyle} exact to="/">Home</NavLink>
                         </motion.li>
                         <motion.li variants={liVar(2)}>
-                            <NavLink activeStyle={activeStyle} exact to="/collection">Collection</NavLink>
+                            <NavLink onClick={resetError} activeStyle={activeStyle} exact to="/collection">Collection</NavLink>
                         </motion.li>
                         <motion.li variants={liVar(3)}>
-                            <NavLink activeStyle={activeStyle} exact to="/play">Play</NavLink>
+                            <NavLink onClick={resetError} activeStyle={activeStyle} exact to="/play">Play</NavLink>
                         </motion.li>
                         <motion.li variants={liVar(4)}>
-                            <NavLink activeStyle={activeStyle} exact to="/login">Login</NavLink>
+                            {   user ?
+                                <button onClick={handleLogout}>Logout</button> :
+                                <NavLink activeStyle={activeStyle} exact to="/login">Login</NavLink>
+                            }
                         </motion.li>
                     </motion.ul>
                 </motion.div>

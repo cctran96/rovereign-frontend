@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react"
+import { useDispatch } from "react-redux"
 import { BrowserRouter as Router, Route } from "react-router-dom"
+import { fetchProfile } from "./actions/accountActions"
 import Navbar from "./components/Navbar"
 import Home from "./containers/Home"
 import Collection from "./containers/Collection"
@@ -7,12 +9,12 @@ import Game from "./containers/Game"
 import Login from "./auth/Login"
 
 const App = () => {
+    const dispatch = useDispatch()
     // const [isLoading, setLoading] = useState(true)
 
-    // useEffect(() => {
-    //     const fakeRequest = () => new Promise(resolve => setTimeout(() => resolve(), 3500))
-    //     fakeRequest().then(() => setLoading(false))
-    // }, [])
+    useEffect(() => {
+        dispatch(fetchProfile())
+    }, [])    
 
     const importImages = (r) => {
         return r.keys().map(r)

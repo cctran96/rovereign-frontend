@@ -74,8 +74,12 @@ body::-webkit-scrollbar {
     margin: 15px;
 }
 
-.menu-links a {
+.menu-links a{
     margin-right: 60px;
+}
+
+.menu-links button {
+    margin-right: 40px;
 }
 
 .open-button {
@@ -112,6 +116,21 @@ body::-webkit-scrollbar {
     font-family: Copperplate, "Copperplate Gothic Light", fantasy;
     font-size: 18px;
     background: linear-gradient(to right bottom, #45489a, #4c428e, #513c83, #533677, #54316c);
+}
+
+.navbar button{
+    border: none;
+    background: transparent;
+    color: rgb(8, 156, 167);
+    font-family: Copperplate, "Copperplate Gothic Light", fantasy;
+    font-size: 18px;
+    padding: 0;
+}
+
+.navbar h1 {
+    font-size: 18px;
+    position: absolute;
+    margin-left: 80px;
 }
 
 .close-button {
@@ -228,8 +247,19 @@ body::-webkit-scrollbar {
     color: white;
     font-weight: 400;
     border-radius: 2px;
+    cursor: pointer;
 }
 
 .login-container button:focus {
     transform: scale(0.90);
+}
+
+.error {
+    border-color: red !important;
+    transition: 0.5s;
+}
+
+.error-container {
+    color: red;
+    font-size: clamp(12px, 2vw, 18px)
 }
