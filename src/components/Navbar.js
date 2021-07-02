@@ -55,9 +55,9 @@ const Navbar = () => {
             <a href="/">
                 <div className="logo">
                     <Logo/>
-                    <h1>{user ? `${user.username}` : null}</h1>
                 </div>
             </a>
+                    <h1>{user ? `${user.username}` : null}</h1>
             {   collapse ? null :
                 <ul className="navlinks">
                     <li><NavLink onClick={resetError} activeStyle={activeStyle} exact to="/">Home</NavLink></li>

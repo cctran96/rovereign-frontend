@@ -15,8 +15,13 @@ export const fetchLogin = (body, history) => {
                 const errors = [{both: data.errors}]
                 dispatch({ type: "ERROR", errors })
             } else {
-                const user = data.user
+                const user = (({id, username, bio}) => ({id, username, bio}))(data.user)
+                const characters = ((({user_characters}) => ({user_characters}))(data.user)).user_characters
+                while (characters.length < 3) {
+                    characters.push({})
+                }
                 dispatch({ type: "LOGIN", user })
+                dispatch({ type: "SET_CHARACTERS", characters })
                 localStorage.setItem("jwt", data.jwt)
                 history.replace("/")
             }
@@ -38,8 +43,13 @@ export const fetchProfile = () => {
                 if (data.errors) {
                     localStorage.removeItem("jwt")
                 } else {
-                    const user = data.user
+                    const user = (({id, username, bio}) => ({id, username, bio}))(data.user)
+                    const characters = ((({user_characters}) => ({user_characters}))(data.user)).user_characters
+                    while (characters.length < 3) {
+                        characters.push({})
+                    }
                     dispatch({ type: "LOGIN", user })
+                    dispatch({ type: "SET_CHARACTERS", characters })
                 }
             })
         }
@@ -64,8 +74,13 @@ export const fetchSignup = (body, history) => {
                 console.log(errors)
                 dispatch({ type: "ERROR", errors })
             } else {
-                const user = data.user
+                const user = (({id, username, bio}) => ({id, username, bio}))(data.user)
+                const characters = ((({user_characters}) => ({user_characters}))(data.user)).user_characters
+                while (characters.length < 3) {
+                    characters.push({})
+                }
                 dispatch({ type: "LOGIN", user })
+                dispatch({ type: "SET_CHARACTERS", characters })
                 localStorage.setItem("jwt", data.jwt)
                 history.replace("/")
             }

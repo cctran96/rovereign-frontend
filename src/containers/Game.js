@@ -1,9 +1,12 @@
 import React from "react"
+import Selection from "../components/Selection"
 
 const Game = () => {
     return (
-        <div className="page-container">
-            
+        <div className="game-page">
+            <div className="game-container">
+                <Selection/>
+            </div>
         </div>
     )
 }

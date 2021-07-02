@@ -263,3 +263,79 @@ body::-webkit-scrollbar {
     color: red;
     font-size: clamp(12px, 2vw, 18px)
 }
+
+.game-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    padding-top: 50px;
+}
+
+.game-container {
+    margin-top: 10px;
+    min-height: 800px;
+    height: 800px;
+    width: 800px;
+    border: 5px solid black;
+}
+
+@media (max-height: 900px), (max-width: 850px) {
+    .game-container {
+        zoom: 0.75
+    }
+ }
+
+ @media (max-height: 700px), (max-width: 600px) {
+     .game-container {
+        zoom: 0.5;
+     }
+ }
+
+ @media (max-height: 500px) {
+     .game-container {
+         zoom: 0.4
+     }
+ }
+
+ @media (max-height: 400px) {
+    .game-container {
+        zoom: 0.25
+    }
+}
+
+.selection-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+}
+
+.character-card {
+    border: 1px solid blue;
+    height: 30%;
+    width: 90%;
+    display: flex;
+}
+
+.skills-container, .stats-container {
+    width: 28%;
+    height: 100%;
+    border: 1px solid green;
+}
+
+.image-container {
+    height: 100%;
+    border: 1px solid green;
+    width: 44%;
+    background-repeat: no-repeat;
+    background-size: contain;
+    z-index: 1;
+}
+
+.stats-container ul {
+    list-style: none;
+}
