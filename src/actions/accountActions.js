@@ -40,7 +40,7 @@ export const fetchProfile = () => {
                     "Authorization": `Bearer ${token}`
                 }
             }).then(r => r.json()).then(data => {
-                if (data.errors) {
+                if (data.message || data.error) {
                     localStorage.removeItem("jwt")
                 } else {
                     const user = (({id, username, bio}) => ({id, username, bio}))(data.user)
