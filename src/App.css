@@ -318,6 +318,7 @@ body::-webkit-scrollbar {
     display: flex;
     border-radius: 50px;
     border-style: outset;
+    position: relative;
 }
 
 .info-container, .stats-container {
@@ -327,17 +328,19 @@ body::-webkit-scrollbar {
 
 .image-container {
     height: 100%;
-    width: 30%;
+    width: 100%;
     background-repeat: no-repeat;
     background-size: contain;
     z-index: 1;
-    background-color: rgb(83, 67, 67, 0.2);
-    border-radius: 50px 0 0 50px;
+    border-radius: 50px;
+    position: absolute;
 }
 
 .stats-container {
     display: flex;
     flex-direction: column;
+    width: 35%;
+    margin-left: 265px;
 }
 
 .stat-table {

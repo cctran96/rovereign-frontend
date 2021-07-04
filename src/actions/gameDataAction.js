@@ -15,7 +15,7 @@ export const importImages = () => {
             vang_satyr: findImage("vang_satyr"),
             santri_satyr: findImage("santri_satyr"),
             owr_satyr: findImage("owr_satyr"),
-            elysian_wraith: findImage("elysian_wraith"),
+            pyro_wraith: findImage("pyro_wraith"),
             occult_wraith: findImage("occult_wraith"),
             arcane_wraith: findImage("arcane_wraith"),
             spearman: findImage("spearman"),
@@ -40,7 +40,29 @@ export const imageInfo = () => {
 }
 
 const knight = {
-    size: "1065x799",
+    size: "1271x811",
+    attack: 10,
+    die: 10,
+    hurt: 10,
+    idle: 10,
+    jump: 10 ,
+    run: 10,
+    walk: 10
+}
+
+const archer = {
+    size: "1311x732",
+    attack: 10,
+    die: 10,
+    hurt: 10,
+    idle: 10,
+    jump: 10 ,
+    run: 10,
+    walk: 10
+}
+
+const wizard = {
+    size: "1662x928",
     attack: 10,
     die: 10,
     hurt: 10,
@@ -91,6 +113,12 @@ const typeInfo = {
     spearman: knight,
     crusader: knight,
     hero: knight,
+    hunter: archer,
+    crossbowman: archer,
+    robinhood: archer,
+    magician: wizard,
+    sorcerer: wizard,
+    elysianist: wizard,
     seller: {
         size: "3818x2000",
         idle: 9
