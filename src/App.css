@@ -268,14 +268,21 @@ body::-webkit-scrollbar {
     justify-content: center;
     height: 100vh;
     padding-top: 50px;
+    background-image: url("https://3.bp.blogspot.com/-piZWCW2uUbg/W2fPXxkWZgI/AAAAAAAAOu0/eydmMjTIqcwLMHEEr2H7imqoRTxMw4o9QCLcBGAs/s1600/among_trees_night_dribbble.png");
+    background-repeat: no-repeat;
+    background-size: cover;
 }
+
+
 
 .game-container {
     margin-top: 10px;
     min-height: 700px;
     height: 700px;
     width: 1000px;
-    border: 5px solid black;
+    /* border: 5px solid black; */
+    background: whitesmoke;
+    position: relative;
 }
 
 @media (max-height: 800px), (max-width: 1020px) {

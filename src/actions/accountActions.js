@@ -63,27 +63,29 @@ export const fetchSignup = (body, history) => {
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify(body)
         }
-        fetch(usersURL, config)
-        .then(r => r.json()).then(data => {
-            if (data.errors || body.password !== body.confirm) {
-                const errors = []
-                for (const [key, value] of Object.entries(data.errors)) {
-                    errors.push({[key]: `${key[0].toUpperCase() + key.slice(1)} ${value}`})
+        if (body.password !== body.confirm) {
+            dispatch({ type: "ERROR", errors: [{confirm: "Password does not match"}] })
+        } else {
+            fetch(usersURL, config)
+            .then(r => r.json()).then(data => {
+                if (data.errors) {
+                    let errors = []
+                    for (const [key, value] of Object.entries(data.errors)) {
+                        errors.push({[key]: `${key[0].toUpperCase() + key.slice(1)} ${value}`})
+                    }
+                    dispatch({ type: "ERROR", errors })
+                } else {
+                    const user = (({id, username, bio}) => ({id, username, bio}))(data.user)
+                    const characters = ((({user_characters}) => ({user_characters}))(data.user)).user_characters
+                    while (characters.length < 3) {
+                        characters.push({})
+                    }
+                    dispatch({ type: "LOGIN", user })
+                    dispatch({ type: "SET_CHARACTERS", characters })
+                    localStorage.setItem("jwt", data.jwt)
+                    history.replace("/")
                 }
-                if (body.password !== body.confirm) errors.push({confirm: "Password does not match"})
-                console.log(errors)
-                dispatch({ type: "ERROR", errors })
-            } else {
-                const user = (({id, username, bio}) => ({id, username, bio}))(data.user)
-                const characters = ((({user_characters}) => ({user_characters}))(data.user)).user_characters
-                while (characters.length < 3) {
-                    characters.push({})
-                }
-                dispatch({ type: "LOGIN", user })
-                dispatch({ type: "SET_CHARACTERS", characters })
-                localStorage.setItem("jwt", data.jwt)
-                history.replace("/")
-            }
-        })
+            })
+        }
     }
 }

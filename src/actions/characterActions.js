@@ -25,7 +25,6 @@ export const confirmDeleteCharacter = (id, allCharacters, callback) => {
         fetch(characterURL + id, config)
         .then(r => r.json()).then(data => {
             const characters = allCharacters.map(c => c.id === id ? {} : c)
-            console.log(data)
             dispatch({ type: "SET_CHARACTERS", characters })
             callback()
         })
