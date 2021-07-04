@@ -1,7 +1,8 @@
 const initialState = {
     characters: [{}, {}, {}],
     currentCharacter: {},
-    deletedCharacter: {}
+    deletedCharacter: {},
+    errors: null
 }
 
 export const characterReducer = (state = initialState, action) => {
@@ -12,6 +13,8 @@ export const characterReducer = (state = initialState, action) => {
             return {...state, currentCharacter: action.currentCharacter}
         case "SET_DELETED":
             return {...state, deletedCharacter: action.character}
+        case "NAME_ERROR":
+            return {...state, errors: action.errors}
         default:
             return state
     }

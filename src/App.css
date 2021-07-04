@@ -203,9 +203,6 @@ body::-webkit-scrollbar {
     width: 100%;
     font-size: 15px;
     border-left: 3px solid black;
-}
-
-.field-container input:focus {
     outline: none;
 }
 
@@ -525,13 +522,17 @@ body::-webkit-scrollbar {
     flex-direction: column;
     align-items: center;
     margin-top: 30px;
+    position: relative;
+}
+
+.creation-container h1{
+    margin-bottom: 0;
 }
 
 .class-names {
     display: flex;
     width: 100%;
     justify-content: space-around;
-    /* border: 1px solid red; */
 }
 
 .class-names h2 {
@@ -540,24 +541,110 @@ body::-webkit-scrollbar {
 
 .creation-info {
     display: flex;
+    height: 300px;
+    width: 100%;
 }
 
 .creation-sprite {
     height: 300px;
-    width: 400px;
+    width: 500px;
     background-repeat: no-repeat;
     background-size: contain;
     margin-left: 20px;
-    /* border: 1px solid red; */
     align-self: flex-start;
+    position: absolute;
+    bottom: 20%;
 }
 
 .creation-buttons {
-    /* border: 1px solid red; */
     height: 40px;
     width: 300px;
     display: flex;
     align-items: center;
     justify-content: space-around;
-    margin-bottom: 20px;
+    margin-top: 10px;
+
+}
+
+.creation-stats {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    height: 100%;
+    width: 50%;
+    margin-left: auto;
+}
+
+.base-stats {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 80%;
+    height: 20px;
+    position: relative;
+}
+
+.stat-bar {
+    background: white;
+    height: 100%;
+    transition: 1s ease;
+}
+
+.creation-buttons button {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 90px;
+    height: 30px;
+    background: white;
+    border-radius: 5px;
+    cursor: pointer;
+    position: relative;
+    transition: 0.5s ease-in-out;
+}
+
+.return-btn:hover {
+    background: blue;
+}
+
+.create-btn:hover {
+    background: green;
+}
+
+.creation-container form {
+    position: absolute;
+    left: 5%;
+    top: 80%;
+    display: flex;
+    align-items: center;
+    height: 35px;
+}
+
+.creation-container label {
+    font-size: 18px;
+}
+
+.creation-container input {
+    border-radius: 5px;
+    border: 2px solid black;
+    margin-left: 5px;
+    height: 25px;
+    font-size: 18px;
+    outline: none;
+    width: 170px;
+}
+
+.creation-errors {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    width: 250px;
+    margin-right: 62%;
+}
+
+.creation-errors p {
+    color: red;
+    font-size: 15px;
+    margin: 0;
 }

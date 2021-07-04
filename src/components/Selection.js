@@ -72,7 +72,7 @@ const Selection = () => {
                     <p>All character data will be lost!</p>
                 </motion.div>
             </div>
-            <CreateCharacter showCreation={showCreation}/>
+            <CreateCharacter showCreation={showCreation} setShowCreation={setShowCreation} characters={characters}/>
         </div>
     )
 }
