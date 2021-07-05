@@ -1,3 +1,10 @@
+export const fetchExperienceThreshold = () => {
+    return dispatch => {
+        fetch("http://localhost:3000/api/v1/experiences")
+        .then(r => r.json()).then(exp => dispatch({ type: "EXP", exp }))
+    }
+}
+
 export const importImages = () => {
     const importImages = (r) => {
         return r.keys().map(r)
@@ -29,7 +36,13 @@ export const importImages = () => {
             elysianist: findImage("elysianist"),
             sellers: findImage("seller")
         }
-        dispatch({ type: "IMAGE_SRC", imageSrc })
+        dispatch({ type: "CHARACTER_IMG", imageSrc })
+
+        const items = {
+            gold: findImage("gold"),
+            potions: findImage("potion")
+        }
+        dispatch({ type: "ITEM_IMG", items })
     }
 }
 

@@ -1,10 +1,9 @@
 const token = localStorage.getItem("jwt")
 const characterURL = "http://localhost:3000/api/v1/user_characters/"
 
-export const setCurrentCharacter = () => {
+export const setCurrentCharacter = character => {
     return dispatch => {
-        const currentCharacter = null
-        dispatch({ type: "SELECT_CHARACTER", currentCharacter })
+        dispatch({ type: "SELECT_CHARACTER", character })
     }
 }
 
@@ -31,12 +30,39 @@ export const confirmDeleteCharacter = (id, allCharacters, callback) => {
     }
 }
 
+export const updateCharacter = (player, obj, oldChars) => {
+    return dispatch => {
+        const body = () => {
+            let update = {...obj}
+            Object.keys(update).forEach(key => {
+                update = {...update, [key]: player[key] + update[key]}
+            })
+            return update
+        }
+        const config = {
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`
+            },
+            body: JSON.stringify(body())
+        }
+        fetch(characterURL + player.id, config)
+        .then(r => r.json()).then(data => {
+            let character = data.character
+            let characters = oldChars.map(c => c.id === character.id ? character : c)
+            dispatch({ type: "SET_CHARACTERS", characters})
+            dispatch({ type: "SELECT_CHARACTER", character })
+        })
+    }
+}
+
 export const createCharacter = (user_id, name, role, oldChars, callback) => {
     return dispatch => {
         const body = {
             user_id,
             name,
-            gold: 1000,
+            gold: 0,
             level: 1,
             experience: 0,
             role

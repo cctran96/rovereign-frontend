@@ -2,7 +2,7 @@ import React, { useState } from "react"
 import { useSelector, useDispatch } from "react-redux"
 import { FiX, FiPlay } from "react-icons/fi/index.esm"
 import { motion } from "framer-motion"
-import { setDeletedCharacter } from "../actions/characterActions"
+import { setDeletedCharacter, setCurrentCharacter } from "../actions/characterActions"
 
 const CharacterCard = ({character, setShow, setShowCreation}) => {
     // Checks if button is being hovered for effect
@@ -41,10 +41,15 @@ const CharacterCard = ({character, setShow, setShowCreation}) => {
         return "#01017e"
     }
 
-    // Delete
+    // Brings up confirmation before deleting character
     const storeDeletedCharacter = () => {
         dispatch(setDeletedCharacter(character))
         setShow(true)
+    }
+
+    // Sets the current character for play
+    const storeSelectedCharacter = () => {
+        dispatch(setCurrentCharacter(character))
     }
 
     return (
@@ -103,6 +108,7 @@ const CharacterCard = ({character, setShow, setShowCreation}) => {
                                 variants={playButtonVar}
                                 onMouseEnter={() => setPlayHover(true)}
                                 onMouseLeave={() => setPlayHover(false)}
+                                onClick={storeSelectedCharacter}
                             >
                                 <motion.p animate={playHover ? "effect" : "none"} variants={playTextVar}>PLAY</motion.p>
                                 <motion.div className="svg" variants={playSvgVar} animate={playHover ? "effect" : "none"}>

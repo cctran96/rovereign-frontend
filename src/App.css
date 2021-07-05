@@ -268,7 +268,7 @@ body::-webkit-scrollbar {
     justify-content: center;
     height: 100vh;
     padding-top: 50px;
-    background-image: url("https://3.bp.blogspot.com/-piZWCW2uUbg/W2fPXxkWZgI/AAAAAAAAOu0/eydmMjTIqcwLMHEEr2H7imqoRTxMw4o9QCLcBGAs/s1600/among_trees_night_dribbble.png");
+    background-image: url("https://i1.wp.com/i.redd.it/gfjwc3en2iu31.png?resize=640%2C9999&ssl=1");
     background-repeat: no-repeat;
     background-size: cover;
 }
@@ -280,7 +280,6 @@ body::-webkit-scrollbar {
     min-height: 700px;
     height: 700px;
     width: 1000px;
-    /* border: 5px solid black; */
     background: whitesmoke;
     position: relative;
 }
@@ -383,7 +382,7 @@ body::-webkit-scrollbar {
     background: rgba(0, 0, 0, 0.6);
 }
 
-.mp, .hp {
+.mp, .hp, .exp {
     color: white;
     font-size: 15px;
     position: absolute;
@@ -657,4 +656,155 @@ body::-webkit-scrollbar {
     color: red;
     font-size: 15px;
     margin: 0;
+}
+
+.map {
+    height: 100%;
+}
+
+.introduction {
+    height: 100%;
+    background-color: gray;
+}
+
+.seller {
+    height: 100%;
+    width: 100%;
+    background-size: contain;
+    background-repeat: no-repeat;
+    position: relative;
+}
+
+.ui {
+    height: 200px;
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    display: flex;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.chatbox {
+    border-top: 1px solid black;
+    border-radius: 5px 0 0 5px;
+    width: 60%;
+    height: 100%;
+    overflow-y: scroll;
+}
+
+.chatbox::-webkit-scrollbar {
+    width: 0;
+}
+
+.chatbox p {
+    margin-left: 5px;
+    margin-top: auto;
+    margin-bottom: 5px;
+}
+
+.player-info-ui {
+    display: flex;
+    height: 100%;
+    width: 40%;
+    background: transparent;
+
+}
+
+.ui-icon-container {
+    margin-left: auto;
+    width: 50px;
+    display: flex;
+    flex-direction: column;
+}
+
+.ui-icon {
+    height: calc(100% / 4);
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+    border: 1px solid black;
+    transition: 0.3s ease-in-out;
+}
+
+.ui-icon:hover {
+    background-color: rgba(245, 245, 245, 0.4);
+}
+
+.player-info-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 350px;
+    border-top: 1px solid black;
+}
+
+.player-info {
+    margin-top: auto;
+    height: 50px;
+    display: flex;
+}
+
+.ui-gold {
+    margin-left: auto;
+    width: 60%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    font-size: 20px;
+}
+
+.gold-sprite {
+    height: 80%;
+    width: 50px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    margin-right: 10px;
+}
+
+.ui-player-name {
+    width: 40%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.ui-player-name p {
+    margin: 0;
+}
+
+.ui-bar-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 150px;
+}
+
+.ui-bar {
+    display: flex;
+    align-items: center;
+    height: 50px;
+    justify-content: space-between;
+}
+
+.ui-bar b {
+    margin-left: 20px;
+}
+
+.ui-bar .bar-border {
+    margin-right: 20px;
+    width: 70%;
+}
+
+.ui-bar p {
+    position: absolute;
+    color: whitesmoke;
+    z-index: 1;
+}
+
+.ui-hp, .ui-mp, .ui-exp {
+    position: absolute;
+    height: 100%;
 }
