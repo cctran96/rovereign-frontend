@@ -38,38 +38,42 @@ const Selection = () => {
             { characters.map((character, idx) => <CharacterCard key={idx} setShow={setShow} setShowCreation={setShowCreation} character={character}/>) }
             <div className="confirm-overlay" style={{display: show ? "block" : "none"}}>
                 <motion.div className="confirm-box" variants={confirmVar} animate={show ? "show" : "hidden"}>
-                    <h1>Retire {deletedCharacter.name}?</h1>
-                    <div className="confirm-buttons">
-                        <div className="return">
-                            <motion.button
-                                animate={noHover ? "effect" : "none"}
-                                variants={noButtonVar}
-                                onMouseEnter={() => setNoHover(true)}
-                                onMouseLeave={() => setNoHover(false)}
-                                onClick={handleReturn}
-                            >
-                                <motion.p animate={noHover ? "effect" : "none"} variants={noTextVar}>RETURN</motion.p>
-                                <motion.div className="svg" variants={noSvgVar} animate={noHover ? "effect" : "none"}>
-                                    <GrReturn size={noHover ? 25 : 17}/>
-                                </motion.div>
-                            </motion.button>
-                        </div>
-                        <div className="delete">
-                            <motion.button
-                                animate={yesHover ? "effect" : "none"}
-                                variants={yesButtonVar}
-                                onMouseEnter={() => setYesHover(true)}
-                                onMouseLeave={() => setYesHover(false)}
-                                onClick={handleDeleteCharacter}
-                            >
-                                <motion.p animate={yesHover ? "effect" : "none"} variants={yesTextVar}>DELETE</motion.p>
-                                <motion.div className="svg" variants={yesSvgVar} animate={yesHover ? "effect" : "none"}>
-                                    <FiX size={yesHover ? 25 : 17}/>
-                                </motion.div>
-                            </motion.button>
-                        </div>
-                    </div>
-                    <p>All character data will be lost!</p>
+                    { show ?
+                        <>
+                            <h1>Retire {deletedCharacter.name}?</h1>
+                            <div className="confirm-buttons">
+                                <div className="return">
+                                    <motion.button
+                                        animate={noHover ? "effect" : "none"}
+                                        variants={noButtonVar}
+                                        onMouseEnter={() => setNoHover(true)}
+                                        onMouseLeave={() => setNoHover(false)}
+                                        onClick={handleReturn}
+                                    >
+                                        <motion.p animate={noHover ? "effect" : "none"} variants={noTextVar}>RETURN</motion.p>
+                                        <motion.div className="svg" variants={noSvgVar} animate={noHover ? "effect" : "none"}>
+                                            <GrReturn size={noHover ? 25 : 17}/>
+                                        </motion.div>
+                                    </motion.button>
+                                </div>
+                                <div className="delete">
+                                    <motion.button
+                                        animate={yesHover ? "effect" : "none"}
+                                        variants={yesButtonVar}
+                                        onMouseEnter={() => setYesHover(true)}
+                                        onMouseLeave={() => setYesHover(false)}
+                                        onClick={handleDeleteCharacter}
+                                    >
+                                        <motion.p animate={yesHover ? "effect" : "none"} variants={yesTextVar}>DELETE</motion.p>
+                                        <motion.div className="svg" variants={yesSvgVar} animate={yesHover ? "effect" : "none"}>
+                                            <FiX size={yesHover ? 25 : 17}/>
+                                        </motion.div>
+                                    </motion.button>
+                                </div>
+                            </div>
+                            <p>All character data will be lost!</p>
+                        </> : null
+                    }
                 </motion.div>
             </div>
             <CreateCharacter showCreation={showCreation} setShowCreation={setShowCreation} characters={characters}/>

@@ -38,12 +38,20 @@ export const importImages = () => {
         }
         dispatch({ type: "CHARACTER_IMG", imageSrc })
 
+        const itemImages = importImages(require.context('../images/icons/items', false, /\.png$/)).map(i => i.default)
         const items = {
             gold: findImage("gold"),
-            potions: findImage("potion")
+            items: itemImages
         }
         dispatch({ type: "ITEM_IMG", items })
+
+        const archerSkills = importImages(require.context('../images/icons/skills/archer', false, /\.png$/)).map(i => i.default)
+        const wizardSkills = importImages(require.context('../images/icons/skills/wizard', false, /\.png$/)).map(i => i.default)
+        const knightSkills = importImages(require.context('../images/icons/skills/knight', false, /\.png$/)).map(i => i.default)
+        const skills = {archer: archerSkills, wizard: wizardSkills, knight: knightSkills}
+        dispatch({ type: "SKILL_IMG", skills })
     }
+
 }
 
 export const imageInfo = () => {

@@ -1,7 +1,8 @@
 const initialState = {
     imageSrc: {},
     typeInfo: {},
-    items: {}
+    items: {},
+    skills: {}
 }
 
 export const imageReducer = (state = initialState, action) => {
@@ -12,6 +13,8 @@ export const imageReducer = (state = initialState, action) => {
             return {...state, typeInfo: action.typeInfo}
         case "ITEM_IMG":
             return {...state, items: action.items}
+        case "SKILL_IMG":
+            return {...state, skills: action.skills}
         default:
             return state
     }

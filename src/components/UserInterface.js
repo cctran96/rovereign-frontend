@@ -1,14 +1,18 @@
 import React, { useEffect, useState } from "react"
-import { useSelector } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { motion } from "framer-motion"
 import { debounce } from "../helpers/debounce"
 import { GiLightBackpack, GiSkills } from "react-icons/gi/index.esm"
 import { RiLogoutBoxLine, RiSettings4Fill } from "react-icons/ri/index.esm"
+import { toggleInventoryMenu, toggleSkillsMenu, toggleSettingsMenu, toggleLogMenu, toggleAllMenus } from "../actions/menuAction"
 
 const UserInterface = ({dialogue, setDialogue}) => {
     // Grab player from store and destructure
     let player = useSelector(state => state.characters.currentCharacter)
     const {name, gold, level, experience, stats, role} = player
+
+    // Set dispatch to variable
+    const dispatch = useDispatch()
 
     // Chat state
     const [chat, setChat] = useState([])
@@ -22,19 +26,27 @@ const UserInterface = ({dialogue, setDialogue}) => {
     let goldSprite = useSelector(state => state.images.items.gold[0])
 
     // Adds next dialogue to chatbox
-    const proceedChat = debounce(e => {
+    const keyPress = debounce(e => {
         const chatbox = document.querySelector(".chatbox")
         if (e.key === " " && dialogue.length) {
             setChat([...chat, dialogue[0]])
             setDialogue(dialogue.slice(1))
             chatbox.scrollTop = chatbox.scrollHeight
+        } else if (e.key === "Escape") {
+            dispatch(toggleLogMenu())
+        } else if (e.key === "k") {
+            dispatch(toggleSkillsMenu())
+        } else if (e.key === "i") {
+            dispatch(toggleInventoryMenu())
+        } else if (e.key === "x") {
+            dispatch(toggleSettingsMenu())
         }
     }, 100)
 
     useEffect(() => {
-        window.addEventListener("keydown", proceedChat)
-        return () => window.removeEventListener("keydown", proceedChat)
-    }, [proceedChat])
+        window.addEventListener("keydown", keyPress)
+        return () => window.removeEventListener("keydown", keyPress)
+    }, [keyPress])
 
     // Change hp/mp bar color depending on current hp/mp
     const hpColor = () => {
@@ -95,6 +107,9 @@ const UserInterface = ({dialogue, setDialogue}) => {
                             <p style={{fontSize: "22px"}}><b>{name}</b></p>
                             <p>{role[0].toUpperCase() + role.slice(1)}</p>
                         </div>
+                        <div className="ui-level">
+                            <p>Level: {level}</p>
+                        </div>
                         <div className="ui-gold">
                             <motion.p initial="start" animate="end" variants={chatVar}>{gold}</motion.p>
                             <div className="gold-sprite" style={{backgroundImage: `url(${goldSprite})`}}/>
@@ -102,16 +117,16 @@ const UserInterface = ({dialogue, setDialogue}) => {
                     </div>
                 </div>
                 <div className="ui-icon-container">
-                    <div className="ui-icon">
+                    <div className="ui-icon" onClick={() => dispatch(toggleInventoryMenu())}>
                         <GiLightBackpack size={35} color="#3b230b"/>
                     </div>
-                    <div className="ui-icon">
+                    <div className="ui-icon" onClick={() => dispatch(toggleSkillsMenu())}>
                         <GiSkills size={35} color="#0a0a53"/>
                     </div>
-                    <div className="ui-icon">
+                    <div className="ui-icon" onClick={() => dispatch(toggleSettingsMenu())}>
                         <RiSettings4Fill size={35} color="#3f3e3e"/>
                     </div>
-                    <div className="ui-icon">
+                    <div className="ui-icon" onClick={() => dispatch(toggleLogMenu())}>
                         <RiLogoutBoxLine size={35}/>
                     </div>
                 </div>
