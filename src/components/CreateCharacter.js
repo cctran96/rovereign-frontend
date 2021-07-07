@@ -39,7 +39,8 @@ const CreateCharacter = ({showCreation, setShowCreation, characters}) => {
         setName("")
     }
 
-    const handleCreateCharacter = () => {
+    const handleCreateCharacter = e => {
+        e.preventDefault()
         dispatch(createCharacter(userId, name, role, characters, closeCreationWindow))
     }
 
@@ -106,7 +107,7 @@ const CreateCharacter = ({showCreation, setShowCreation, characters}) => {
                     }
                     {   sprite ? 
                         <>
-                            <form>
+                            <form onSubmit={handleCreateCharacter}>
                                 <label>Name</label>
                                 <input onChange={e => setName(e.target.value)} value={name} placeholder="Display name"/>
                             </form> 

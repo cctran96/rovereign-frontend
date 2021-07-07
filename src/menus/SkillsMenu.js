@@ -1,5 +1,4 @@
 import React from "react"
-import { motion } from "framer-motion"
 import { useSelector } from "react-redux"
 
 const SkillsMenu = ({player}) => {
@@ -21,26 +20,18 @@ const SkillsMenu = ({player}) => {
     }
 
     return (
-        <motion.div className="skills-menu" variants={menuVar} animate={show ? "open" : "closed"}>
-            {   show ?
-                <>
-                    {skillset().map(skill => {
-                        return (
-                            <div className="skill-icon" style={{backgroundImage: `url(${skillImage(skill)})`}}/>
-                        )
-                    })}
-                </> : null
-            }
-        </motion.div>
+        show ?
+        <div className="skills-menu">
+            {skillset().map((skill, idx) => {
+                return (
+                    <div key={idx} className="skill-icon" style={{backgroundImage: `url(${skillImage(skill)})`}}/>
+                )
+            })}
+        </div> : null
     )
 }
 
 export default SkillsMenu
-
-const menuVar = {
-    open: {opacity: 1, transition: {duration: 0.7, ease: "easeInOut"}},
-    closed: {opacity: 0}
-}
 
 const skillHash = {
     spearman: "knight",

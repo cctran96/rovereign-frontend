@@ -15,6 +15,8 @@ export const imageReducer = (state = initialState, action) => {
             return {...state, items: action.items}
         case "SKILL_IMG":
             return {...state, skills: action.skills}
+        case "MAP_IMG":
+            return {...state, maps: action.maps}
         default:
             return state
     }

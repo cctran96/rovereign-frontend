@@ -1,5 +1,4 @@
 import React from "react"
-import { motion } from "framer-motion"
 import { useSelector } from "react-redux"
 
 const InventoryMenu = ({player}) => {
@@ -21,25 +20,17 @@ const InventoryMenu = ({player}) => {
     }
 
     return (
-        <motion.div className="inventory-menu" variants={menuVar} animate={show ? "open" : "closed"}>
-            {   show ?
-                <>
-                    {inventory().map(item => {
-                        return (
-                            <div className="skill-icon" style={{backgroundImage: `url(${itemImage(item)})`}}>
-                                <p style={{color: "white", transform: "translateY(-15px)"}}>{item.amount}</p>
-                            </div>
-                        )
-                    })}
-                </> : null
-            }
-        </motion.div>
+        show ?
+        <div className="inventory-menu">
+            {inventory().map((item, idx) => {
+                return (
+                    <div key={idx} className="skill-icon" style={{backgroundImage: `url(${itemImage(item)})`}}>
+                        <p style={{color: "white", transform: "translateY(-15px)"}}>{item.amount}</p>
+                    </div>
+                )
+            })}
+        </div> : null
     )
 }
 
 export default InventoryMenu
-
-const menuVar = {
-    open: {opacity: 1, transition: {duration: 0.7}},
-    closed: {opacity: 0}
-}

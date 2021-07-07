@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux"
 import { NavLink, useHistory } from "react-router-dom"
 import { motion } from "framer-motion"
 import { debounce } from "../helpers/debounce"
+import { logOutCharacter } from "../actions/characterActions"
 import { ReactComponent as Logo } from "../logo/Logo.svg"
 import { GoThreeBars } from "react-icons/go"
 import { IoMdClose } from "react-icons/io"
@@ -41,6 +42,8 @@ const Navbar = () => {
     // Logs user out
     const handleLogout = () => {
         dispatch({ type: "LOGIN", user: false })
+        dispatch(logOutCharacter())
+        dispatch({ type: "SET_CHARACTERS", characters: [{}, {}, {}] })
         localStorage.removeItem("jwt")
         history.replace("/login")
     }

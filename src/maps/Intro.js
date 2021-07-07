@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from "react"
 import { useSelector, useDispatch } from "react-redux"
-import { createItem } from "../actions/itemActions"
-import { updateCharacter } from "../actions/characterActions"
+import { updateCharAndInventory } from "../actions/playerActions"
 import { motion } from "framer-motion"
-import { ImArrowDownRight } from "react-icons/im/index.esm"
+import { ImArrowDownRight, ImArrowLeft } from "react-icons/im/index.esm"
 import UserInterface from "../components/UserInterface"
 
 const Intro = ({player}) => {
-    // Grab seller image from store
+    // Grab seller image and characters from store
     let sellers = useSelector(state => state.images.imageSrc.sellers)
     let characters = useSelector(state => state.characters.characters)
+    let currentCharacter = useSelector(state => state.characters.currentCharacter)
 
     // Set dispatch to variable
     const dispatch = useDispatch()
@@ -26,9 +26,9 @@ const Intro = ({player}) => {
         {Kyle: "If you laugh right now, I'll give you some free potions."},
         {[name]: "HAHAHA. That's the best joke I've ever heard!"},
         {Message: "You receive 3 health potions, 3 mana potions, 3 strength potions, 3 range potions, and 3 magic potions."},
-        {Kyle: 'Access your inventory by clicking on the inventory icon or by using the "I" key.'},
-        {Kyle: 'View your skills by clicking on the skills icon or by pressing the "K" key'},
         {Kyle: `If you'd like to switch characters, you can log off by clicking the log off icon or by hitting "ESC"`},
+        {Kyle: 'View your skills by clicking on the skills icon or by pressing the "K" key'},
+        {Kyle: 'Access your inventory by clicking on the inventory icon or by using the "I" key.'},
         {Kyle: "Just outside of this town is Primeval Forest where Satyrs roam. Put your skills to the test to see if you can defeat one."},
         {Kyle: "Here's 1000 gold. Good luck!"},
         {Message: "You receive 1000 gold."}
@@ -38,6 +38,28 @@ const Intro = ({player}) => {
     const [arrow, setArrow] = useState(null)
 
     useEffect(() => {
+        switch (dialogue.length) {
+            case 0:
+                dispatch({ type: "SELECT_CHARACTER", character: {...currentCharacter, gold: 1000}})
+                break
+            case 6:
+                dispatch({ type: "SELECT_CHARACTER", character: {...currentCharacter, inventory: fakeInv}})
+                break
+            case 3:
+                setArrow("inv")
+                break
+            case 4:
+                setArrow("skill")
+                break
+            case 5:
+                setArrow("log")
+                break
+            default:
+                setArrow(null)
+        }
+    }, [dialogue, dispatch, currentCharacter])
+
+    const confirmEndTutorial = () => {
         const obj = {
             health_potion: 3,
             mana_potion: 3,
@@ -45,28 +67,18 @@ const Intro = ({player}) => {
             range_potion: 3,
             magic_potion: 3
         }
-        switch (dialogue.length) {
-            // case 0:
-            //     dispatch(updateCharacter(player, {gold: 1000}, characters))
-            // case 6:
-            //     dispatch(createItem(player, obj, characters))
-            case 5:
-                setArrow("inv")
-                break
-            case 4:
-                setArrow("skill")
-                break
-            case 3:
-                setArrow("log")
-                break
-            default:
-                setArrow(null)
-        }
-    }, [dialogue])
+        dispatch(updateCharAndInventory(player, {gold: 1000}, obj, characters))
+    }
 
     return (
         <div className="introduction">
             <div className="seller" style={{backgroundImage: `url(${sellers[0]})`}}/>
+            {   !dialogue.length ? 
+                <div className="end-tutorial" onClick={confirmEndTutorial}>
+                    <p style={{margin: 0}}>Primeval Forest</p>
+                    <ImArrowLeft size={40}/>
+                </div> : null
+            }
             <UserInterface dialogue={dialogue} setDialogue={setDialogue}/>
             <motion.div 
                 className="arrow" 
@@ -87,3 +99,11 @@ const arrowVar = {
     skill: {opacity: 1, y: 50, transition: {duration: 0.5}},
     log: {opacity: 1, y: 150, transition: {duration: 0.5}}
 }
+
+const fakeInv = [
+    {amount: 3, item: {name: "health_potion", description: "A concentrated potion made out of pity berries.", effect: {craft: ["5 pity_berry"], increase: {hp: 30}}}},
+    {amount: 3, item: {name: "mana_potion", description: "A concentrated potion made out of cerebral berries.", effect: {craft: ["5 cerebral_berry"], increase: {mp: 30}}}},
+    {amount: 3, item: {name: "strength_potion", description: "A concentrated potion made out of renal berries.", effect: {craft: ["5 renal_berry"], increase: {str: 10}}}},
+    {amount: 3, item: {name: "range_potion", description: "A concentrated potion made out of nympha berries.", effect: {craft: ["5 nympha_berry"], increase: {dex: 10}}}},
+    {amount: 3, item: {name: "magic_potion", description: "A concentrated potion made out of pimple berries.", effect: {craft: ["5 pimple_berry"], increase: {int: 10}}}}
+]

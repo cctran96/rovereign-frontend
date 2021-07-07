@@ -4,7 +4,7 @@ import { motion } from "framer-motion"
 import { debounce } from "../helpers/debounce"
 import { GiLightBackpack, GiSkills } from "react-icons/gi/index.esm"
 import { RiLogoutBoxLine, RiSettings4Fill } from "react-icons/ri/index.esm"
-import { toggleInventoryMenu, toggleSkillsMenu, toggleSettingsMenu, toggleLogMenu, toggleAllMenus } from "../actions/menuAction"
+import { toggleInventoryMenu, toggleSkillsMenu, toggleSettingsMenu, toggleLogMenu } from "../actions/menuAction"
 
 const UserInterface = ({dialogue, setDialogue}) => {
     // Grab player from store and destructure
@@ -14,7 +14,7 @@ const UserInterface = ({dialogue, setDialogue}) => {
     // Set dispatch to variable
     const dispatch = useDispatch()
 
-    // Chat state
+    // Chat state, end tutorial state
     const [chat, setChat] = useState([])
 
     // Grabs experience threshold from store and calculates current exp
@@ -28,7 +28,7 @@ const UserInterface = ({dialogue, setDialogue}) => {
     // Adds next dialogue to chatbox
     const keyPress = debounce(e => {
         const chatbox = document.querySelector(".chatbox")
-        if (e.key === " " && dialogue.length) {
+        if (e.key === " " && dialogue && dialogue.length) {
             setChat([...chat, dialogue[0]])
             setDialogue(dialogue.slice(1))
             chatbox.scrollTop = chatbox.scrollHeight

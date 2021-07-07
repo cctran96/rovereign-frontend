@@ -50,8 +50,10 @@ export const importImages = () => {
         const knightSkills = importImages(require.context('../images/icons/skills/knight', false, /\.png$/)).map(i => i.default)
         const skills = {archer: archerSkills, wizard: wizardSkills, knight: knightSkills}
         dispatch({ type: "SKILL_IMG", skills })
-    }
 
+        const maps = importImages(require.context('../images/maps', false, /\.png$/)).map(i => i.default)
+        dispatch({ type: "MAP_IMG", maps })
+    }
 }
 
 export const imageInfo = () => {
