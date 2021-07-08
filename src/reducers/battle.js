@@ -13,6 +13,8 @@ export const battleReducer = (state = initialState, action) => {
             return{...state, inBattle: false, monster: {}, player: {}}
         case "SELECT_MOVE":
             return {...state, selection: action.selection}
+        case "RESET_BATTLE":
+            return {...state, selection: null, inBattle: false, monster: {}, player: {}}
         default:
             return state
     }

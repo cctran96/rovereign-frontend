@@ -66,7 +66,7 @@ const BattleInterface = () => {
             </motion.div>
             {   selection ? 
                 <div className="selected-move">
-                    <p>{Object.keys(selection)[0].toUpperCase()}: {Object.values(selection)[0]}</p>
+                    <p>{Object.keys(selection)[0].toUpperCase()}: {Object.values(selection)[0].split("_").map(w => w[0].toUpperCase() + w.slice(1)).join(" ")}</p>
                     <button><AiFillCaretRight size={20}/></button>
                 </div> : null
             }

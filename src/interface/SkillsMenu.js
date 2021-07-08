@@ -27,7 +27,7 @@ const SkillsMenu = ({player}) => {
     }
 
     const formattedName = skill => {
-        return skill.name.split("_").map(w => w[0].toUpperCase() + w.slice(1)).join(" ")
+        return skill.name
     }
 
     return (

@@ -27,7 +27,7 @@ const InventoryMenu = ({player}) => {
     }
 
     const formattedName = item => {
-        return item.item.name.split("_").map(w => w[0].toUpperCase() + w.slice(1)).join(" ")
+        return item.item.name
     }
 
     return (

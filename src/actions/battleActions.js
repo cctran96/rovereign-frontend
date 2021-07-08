@@ -21,3 +21,9 @@ export const setCurrentMonster = monster => {
         dispatch({ type: "SET_MONSTER", monster })
     }
 }
+
+export const resetBattle = () => {
+    return dispatch => {
+        dispatch({ type: "RESET_BATTLE" })
+    }
+}
