@@ -64,7 +64,7 @@ const Navbar = () => {
             {   collapse ? null :
                 <ul className="navlinks">
                     <li><NavLink onClick={resetError} activeStyle={activeStyle} exact to="/">Home</NavLink></li>
-                    <li><NavLink onClick={resetError} activeStyle={activeStyle} exact to="/collection">Collection</NavLink></li>
+                    <li><NavLink onClick={resetError} activeStyle={activeStyle} exact to="/wiki">Wiki</NavLink></li>
                     <li><NavLink onClick={resetError} activeStyle={activeStyle} exact to="/play">Play</NavLink></li>
                     <li>
                         {   user ?
@@ -97,7 +97,7 @@ const Navbar = () => {
                             <NavLink onClick={resetError} activeStyle={activeStyle} exact to="/">Home</NavLink>
                         </motion.li>
                         <motion.li variants={liVar(2)}>
-                            <NavLink onClick={resetError} activeStyle={activeStyle} exact to="/collection">Collection</NavLink>
+                            <NavLink onClick={resetError} activeStyle={activeStyle} exact to="/wiki">Wiki</NavLink>
                         </motion.li>
                         <motion.li variants={liVar(3)}>
                             <NavLink onClick={resetError} activeStyle={activeStyle} exact to="/play">Play</NavLink>

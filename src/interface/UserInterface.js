@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { motion } from "framer-motion"
 import { debounce } from "../helpers/debounce"
@@ -6,7 +6,7 @@ import { GiLightBackpack, GiSkills } from "react-icons/gi/index.esm"
 import { RiLogoutBoxLine, RiSettings4Fill } from "react-icons/ri/index.esm"
 import { toggleInventoryMenu, toggleSkillsMenu, toggleSettingsMenu, toggleLogMenu } from "../actions/menuAction"
 
-const UserInterface = ({dialogue, setDialogue}) => {
+const UserInterface = () => {
     // Grab player from store and destructure
     let player = useSelector(state => state.characters.currentCharacter)
     const {name, gold, level, experience, stats, role} = player
@@ -15,7 +15,7 @@ const UserInterface = ({dialogue, setDialogue}) => {
     const dispatch = useDispatch()
 
     // Chat state, end tutorial state
-    const [chat, setChat] = useState([])
+    const chat = useSelector(state => state.menu.chat)
 
     // Grabs experience threshold from store and calculates current exp
     let experinceThreshold = useSelector(state => state.exp.exp)
@@ -25,12 +25,9 @@ const UserInterface = ({dialogue, setDialogue}) => {
     // Grabs gold sprite
     let goldSprite = useSelector(state => state.images.items.gold[0])
 
-    // Adds next dialogue to chatbox
     const keyPress = debounce(e => {
         const chatbox = document.querySelector(".chatbox")
-        if (e.key === " " && dialogue && dialogue.length) {
-            setChat([...chat, dialogue[0]])
-            setDialogue(dialogue.slice(1))
+        if (e.key === " ") {
             chatbox.scrollTop = chatbox.scrollHeight
         } else if (e.key === "Escape") {
             dispatch(toggleLogMenu())
@@ -87,7 +84,7 @@ const UserInterface = ({dialogue, setDialogue}) => {
                             <b>MP: </b>
                             <div className="bar-border">
                                 <div className="mp">
-                                    <p>{stats.current_hp}/{stats.hp}</p>
+                                    <p>{stats.current_mp}/{stats.mp}</p>
                                 </div>
                                 <div className="ui-mp" style={{backgroundColor: mpColor(), width: `${(stats.current_mp/stats.mp)*100}%`}}/>
                             </div>
@@ -141,7 +138,7 @@ const UserInterface = ({dialogue, setDialogue}) => {
                                     initial="start" 
                                     animate="end" 
                                     variants={chatVar} 
-                                    style={{color: key[0] === "Message" ? "lightgreen" : (key[0] === name ? "cyan" : "whitesmoke")}}
+                                    style={{color: key[0] === "Message" ? "lightgreen" : (key[0] === name ? "cyan" : (key[0] === "Notice" ? "#a70101" : "whitesmoke"))}}
                                 >
                                     <b>{key}:</b> {obj[key]}
                                 </motion.p>

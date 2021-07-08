@@ -1,10 +1,13 @@
 import React from "react"
-import { useSelector } from "react-redux"
+import { useSelector, useDispatch } from "react-redux"
+import { selectMove } from "../actions/battleActions"
 
 const SkillsMenu = ({player}) => {
+    const dispatch = useDispatch()
     const show = useSelector(state => state.menu.skills)
     const images = useSelector(state => state.images.skills[skillHash[player.role]])
-    const skills = useSelector(state => state.details.skills.filter(s => s.character === player.role && player.level >= s.level))
+    const inBattle = useSelector(state => state.battle.inBattle)
+    const skills = useSelector(state => state.details.skills.filter(s => s.character.role === player.role && player.level >= s.level))
    
     const skillset = () => {
         let placeholder = [...skills]
@@ -19,12 +22,25 @@ const SkillsMenu = ({player}) => {
         return image ? image : null
     }
 
+    const handleClick = skill => {
+        if (inBattle) dispatch(selectMove({skill: skill}))
+    }
+
+    const formattedName = skill => {
+        return skill.name.split("_").map(w => w[0].toUpperCase() + w.slice(1)).join(" ")
+    }
+
     return (
         show ?
         <div className="skills-menu">
             {skillset().map((skill, idx) => {
                 return (
-                    <div key={idx} className="skill-icon" style={{backgroundImage: `url(${skillImage(skill)})`}}/>
+                    <div 
+                        key={idx} 
+                        className="skill-icon" 
+                        style={{backgroundImage: `url(${skillImage(skill)})`}}
+                        onClick={() => handleClick(formattedName(skill))}
+                    />
                 )
             })}
         </div> : null

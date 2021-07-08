@@ -5,6 +5,8 @@ import { imageReducer } from "./imageData"
 import { experienceReducer } from "./exp"
 import { menuReducer } from "./menu"
 import { gameDataReducer } from "./gameData"
+import { monsterReducer } from "./monster"
+import { battleReducer } from "./battle"
 
 const rootReducer = combineReducers({
     user: loginReducer,
@@ -12,7 +14,9 @@ const rootReducer = combineReducers({
     characters: characterReducer,
     exp: experienceReducer,
     menu: menuReducer,
-    details: gameDataReducer
+    details: gameDataReducer,
+    monsters: monsterReducer,
+    battle: battleReducer
 })
 
 export default rootReducer

@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route } from "react-router-dom"
 import { fetchProfile } from "./actions/accountActions"
 import { imageInfo, importImages, fetchExperienceThreshold } from "./actions/gameImageActions"
 import { importCharacterDetails, importSkillDetails } from "./actions/gameDataActions"
+import { fetchMonsters } from "./actions/monsterActions"
 import Navbar from "./components/Navbar"
 import Home from "./containers/Home"
 import Collection from "./containers/Collection"
@@ -20,6 +21,7 @@ const App = () => {
         dispatch(fetchExperienceThreshold())
         dispatch(importCharacterDetails())
         dispatch(importSkillDetails())
+        dispatch(fetchMonsters())
     }, [dispatch])
 
     return (

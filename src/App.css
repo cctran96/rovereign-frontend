@@ -6,7 +6,7 @@ body {
     height: 100vh;
     margin: 0px !important;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    background: linear-gradient(to right bottom, #45489a, #4c428e, #513c83, #533677, #54316c);
+    background: linear-gradient(to right, #45489a, #4c428e, #513c83, #533677, #54316c);
 }
 
 body::-webkit-scrollbar {
@@ -152,6 +152,26 @@ body::-webkit-scrollbar {
     transition: 0.5s;
 }
 
+.home-page {
+    height: 100vh;
+    width: 100vw;
+    position: absolute;
+    top: 0;
+    left: 0;
+    overflow: hidden;
+    min-height: 565px;
+}
+
+.home-text {
+    height: 100%;
+    font-family: URW Chancery L, cursive;
+    text-align: center;
+}
+
+.home-text h1 {
+    font-size: 70px;
+}
+
 .login-page {
     height: 100vh;
     min-height: 565px;
@@ -259,7 +279,7 @@ body::-webkit-scrollbar {
 
 .error-container {
     color: red;
-    font-size: clamp(12px, 2vw, 18px)
+    font-size: clamp(12px, 2vw, 18px);
 }
 
 .game-page {
@@ -671,9 +691,8 @@ body::-webkit-scrollbar {
     overflow: hidden;
 }
 
-.introduction {
+.introduction, .battle-intro {
     height: 100%;
-    background-color: gray;
     position: relative;
 }
 
@@ -834,36 +853,30 @@ body::-webkit-scrollbar {
     left: 30.5%;
 }
 
-.skills-menu {
+.skills-menu, .inventory-menu {
     position: absolute;
     top: 0;
     left: 0;
-    height: 50px;
-    width: 750px;
+    height: 150px;
+    width: 250px;
     display: flex;
-    margin-left: 8%;
+    flex-wrap: wrap;
     background-color: rgba(0, 0, 0, 0.4);
+    z-index: 2;
 }
 
-.skill-icon {
+.skill-icon, .item-icon {
     background-repeat: no-repeat;
-    background-size: contain;
+    background-size: cover;
     width: 50px;
     height: 50px;
     border: 1px solid black;
+    cursor: pointer;
 }
 
 .inventory-menu {
-    position: absolute;
-    top: 14%;
-    right: 0;
-    height: 350px;
-    width: 204px;
-    display: flex;
-    border: 1px solid black;
-    border-right: none;
-    background-color: rgba(0, 0, 0, 0.4);
-    flex-wrap: wrap;
+    height: 200px;
+    width: 350px;
 }
 
 .end-tutorial {
@@ -883,11 +896,8 @@ body::-webkit-scrollbar {
     color: white
 }
 
-.inventory-menu .skill-icon {
-    border-right: none;
-}
-
 .map-container {
+
     width: 100%;
     height: 500px;
     overflow: hidden;
@@ -908,4 +918,90 @@ body::-webkit-scrollbar {
     height: 300px;
     width: 45%;
     transform: translateY(-240px);
+}
+
+.monster {
+    position: absolute;
+    bottom: -25px;
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+.battle-intro h1 {
+    position: absolute;
+    color: darkred;
+    top: 0;
+    left: 35%;
+    font-size: 50px;
+}
+
+.monster-info {
+    top: 0;
+    right: 0;
+    position: absolute;
+    width: 300px;
+    height: 150px;
+    background-color: rgba(0, 0, 0, 0.4);
+    border-left: 1px solid black;
+    border-bottom: 1px solid black;
+}
+
+.monster-name {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    color: white;
+    font-weight: bold;
+}
+
+.battle-ui {
+    position: absolute;
+    top: 0;
+    background-color: transparent;
+    width: 100%;
+    height: 500px;
+}
+
+.selected-move {
+    position: absolute;
+    height: 30px;
+    width: 250px;
+    border: 1px solid black;
+    top: 42%;
+    left: 5px;
+    display: flex;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.4);
+    color: white;
+    text-align: center;
+}
+
+.selected-move button {
+    height: 30px;
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(255, 255, 255, 0.4);
+    border: none;
+    cursor: pointer;
+    transition: 0.2s ease-in-out;
+}
+
+.selected-move button:hover, .default-attack:hover {
+    background-color: rgba(0, 0, 0, 0.4);
+    color: white
+}
+
+.default-attack {
+    position: absolute;
+    top: 50%;
+    left: 9%;
+    background-color: rgba(255, 255, 255, 0.4);
+    cursor: pointer;
+    border: none;
+    transition: 0.2s ease-in-out;
+    width: 70px;
+    font-family: Impact, fantasy;
+    font-size: 15px;
 }

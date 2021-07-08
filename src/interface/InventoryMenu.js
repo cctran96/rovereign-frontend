@@ -1,9 +1,12 @@
 import React from "react"
-import { useSelector } from "react-redux"
+import { useSelector, useDispatch } from "react-redux"
+import { selectMove } from "../actions/battleActions"
 
 const InventoryMenu = ({player}) => {
+    const dispatch = useDispatch()
     const show = useSelector(state => state.menu.inventory)
     const images = useSelector(state => state.images.items.items)
+    const inBattle = useSelector(state => state.battle.inBattle)
 
     const inventory = () => {
         let placeholder = [...player.inventory]
@@ -19,12 +22,25 @@ const InventoryMenu = ({player}) => {
         return image
     }
 
+    const handleClick = item => {
+        if (inBattle) dispatch(selectMove({item: item}))
+    }
+
+    const formattedName = item => {
+        return item.item.name.split("_").map(w => w[0].toUpperCase() + w.slice(1)).join(" ")
+    }
+
     return (
         show ?
         <div className="inventory-menu">
             {inventory().map((item, idx) => {
                 return (
-                    <div key={idx} className="skill-icon" style={{backgroundImage: `url(${itemImage(item)})`}}>
+                    <div 
+                        key={idx} 
+                        className="item-icon" 
+                        style={{backgroundImage: `url(${itemImage(item)})`}}
+                        onClick={() => handleClick(formattedName(item))}
+                    >
                         <p style={{color: "white", transform: "translateY(-15px)"}}>{item.amount}</p>
                     </div>
                 )

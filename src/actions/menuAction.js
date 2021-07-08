@@ -27,3 +27,9 @@ export const toggleAllMenus = () => {
         dispatch({ type: "ALL_MENU" })
     }
 }
+
+export const updateChatBox = chat => {
+    return dispatch => {
+        dispatch({ type: "CHAT", chat})
+    }
+}

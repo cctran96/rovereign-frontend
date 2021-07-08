@@ -2,9 +2,9 @@ import React from "react"
 import { useSelector } from "react-redux"
 import Intro from "../maps/Intro"
 import BattleIntro from "../maps/BattleIntro"
-import LogOutMenu from "../menus/LogOutMenu"
-import SkillsMenu from "../menus/SkillsMenu"
-import InventoryMenu from "../menus/InventoryMenu"
+import LogOutMenu from "../interface/LogOutMenu"
+import SkillsMenu from "../interface/SkillsMenu"
+import InventoryMenu from "../interface/InventoryMenu"
 
 const Map = ({player}) => {
     const actual = useSelector(state => state.characters.characters.find(c => c.id === player.id))
