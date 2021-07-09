@@ -4,8 +4,6 @@ import { NavLink, useHistory } from "react-router-dom"
 import { motion } from "framer-motion"
 import { debounce } from "../helpers/debounce"
 import { logOutCharacter } from "../actions/characterActions"
-import { toggleAllMenus } from "../actions/menuAction"
-import { resetBattle } from "../actions/battleActions"
 import { ReactComponent as Logo } from "../logo/Logo.svg"
 import { GoThreeBars } from "react-icons/go"
 import { IoMdClose } from "react-icons/io"
@@ -46,8 +44,6 @@ const Navbar = () => {
         dispatch({ type: "LOGIN", user: false })
         dispatch(logOutCharacter())
         dispatch({ type: "SET_CHARACTERS", characters: [{}, {}, {}] })
-        dispatch(toggleAllMenus())
-        dispatch(resetBattle())
         localStorage.removeItem("jwt")
         history.replace("/login")
     }
@@ -55,7 +51,7 @@ const Navbar = () => {
     // Resets error state when changing routes
     const resetError = () => {
         dispatch({ type: "ERROR", errors: false })
-        dispatch(resetBattle())
+        dispatch(logOutCharacter())
     }
 
     return (

@@ -3,11 +3,11 @@ import { useDispatch } from "react-redux"
 import { BrowserRouter as Router, Route } from "react-router-dom"
 import { fetchProfile } from "./actions/accountActions"
 import { imageInfo, importImages, fetchExperienceThreshold } from "./actions/gameImageActions"
-import { importCharacterDetails, importSkillDetails } from "./actions/gameDataActions"
+import { importCharacterDetails, importSkillDetails, importItemDetails } from "./actions/gameDataActions"
 import { fetchMonsters } from "./actions/monsterActions"
 import Navbar from "./components/Navbar"
 import Home from "./containers/Home"
-import Collection from "./containers/Collection"
+import Wiki from "./containers/Wiki"
 import Game from "./containers/Game"
 import Login from "./auth/Login"
 
@@ -21,6 +21,7 @@ const App = () => {
         dispatch(fetchExperienceThreshold())
         dispatch(importCharacterDetails())
         dispatch(importSkillDetails())
+        dispatch(importItemDetails())
         dispatch(fetchMonsters())
     }, [dispatch])
 
@@ -28,7 +29,7 @@ const App = () => {
         <Router>
             <Navbar/>
             <Route exact path="/" render={() => <Home/>}/>
-            <Route exact path="/collection" render={() => <Collection/>}/>
+            <Route exact path="/wiki" render={() => <Wiki/>}/>
             <Route exact path="/play" render={() => <Game/>}/>
             <Route exact path="/login" render={() => <Login/>}/>
         </Router>

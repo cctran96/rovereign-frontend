@@ -7,7 +7,7 @@ const SkillsMenu = ({player}) => {
     const show = useSelector(state => state.menu.skills)
     const images = useSelector(state => state.images.skills[skillHash[player.role]])
     const inBattle = useSelector(state => state.battle.inBattle)
-    const skills = useSelector(state => state.details.skills.filter(s => s.character.role === player.role && player.level >= s.level))
+    const skills = useSelector(state => state.details.skills.filter(s => s.character === player.role && player.level >= s.level))
    
     const skillset = () => {
         let placeholder = [...skills]

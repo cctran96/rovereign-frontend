@@ -17,3 +17,13 @@ export const importCharacterDetails = () => {
         })
     }
 }
+
+export const importItemDetails = () => {
+    return dispatch => {
+        fetch("http://localhost:3000/api/v1/items")
+        .then(r => r.json()).then(data => {
+            const items = data.items
+            dispatch({ type: "ITEM_DATA", items })
+        })
+    }
+}

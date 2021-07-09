@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux"
 import { useKeyDown, useKeyUp } from "../helpers/useKeyPress"
 import { updateChatBox } from "../actions/menuAction"
 import { startBattle } from "../actions/battleActions"
+import { changePlayerStance } from "../actions/stanceActions"
 import { motion } from "framer-motion"
 import UserInterface from "../interface/UserInterface"
 import BattleInterface from "../interface/BattleInterface"
@@ -16,7 +17,7 @@ const BattleIntro = ({player}) => {
     const chat = useSelector(state => state.menu.chat)
 
     // State for character's current action
-    const [action, setAction] = useState("idle")
+    const action = useSelector(state => state.stance.player)
 
     // State for map positions, monster poisition
     const [map1Pos, setMap1Pos] = useState(0)
@@ -28,7 +29,7 @@ const BattleIntro = ({player}) => {
     // Updates chat on render
     useEffect(() => {
         dispatch(updateChatBox([{Notice: "You've entered Primeval Forest."}]))
-    }, [])
+    }, [dispatch])
 
     // Grab first map and monster from store
     let map = useSelector(state => state.images.maps.find(i => i.includes("primeval_forest")))
@@ -62,8 +63,8 @@ const BattleIntro = ({player}) => {
                 setMap1Pos(map1 <= -888 ? 880 : map1)
                 setMap2Pos(map2 <= -888 ? 880 : map2)
                 setMonPos(mon)
-                mon < 650 ? handleAmbush() : console.log()
-                setAction(mon < 650 ? "idle" : "run")
+                mon === 640 ? handleAmbush() : console.log()
+                dispatch(changePlayerStance((mon === 640 ? "idle" : "run")))
                 break
             default:
                 return
@@ -73,9 +74,9 @@ const BattleIntro = ({player}) => {
     const handleAmbush = () => {
         const stats = monster.base_stats
         let obj = {
-            name: "Vang Satyr",
-            level: 1,
-            current_hp: stats.hp,
+            name: "vang_satyr",
+            level: 2,
+            current_hp: 5000,
             hp: stats.hp,
             current_mp: stats.mp,
             mp: stats.mp,
@@ -86,15 +87,15 @@ const BattleIntro = ({player}) => {
             def: stats.def,
             cri: stats.cri,
             drops: monster.drops,
-            gold: monster.gold,
-            exp: 83
+            gold: 20,
+            exp: 20
         }
         
-        dispatch(startBattle(obj, player))
+        dispatch(startBattle(obj))
         dispatch(updateChatBox([...chat, {Notice: "You've been ambushed by a Vang Satyr!"}]))
     }
 
-    useKeyUp(() => !inBattle ? setAction("idle") : null)
+    useKeyUp(() => !inBattle ? dispatch(changePlayerStance(("idle"))) : null)
     useKeyDown(e => !inBattle ? switchAction(e) : null)
 
     return (
@@ -102,10 +103,10 @@ const BattleIntro = ({player}) => {
             <div className="map-container">
                 <div className="map-back1" style={{backgroundImage: `url(${map})`, transform: `translate3d(${map1Pos}px, 0, 0)`}}/>
                 <div className="map-back2" style={{backgroundImage: `url(${map})`, transform: `translate3d(${map2Pos}px, 0, 0)`}}/>
-                <MonsterSprite monster={monster} position={monPos} stance="idle"/>
+                <MonsterSprite monster={monster} position={monPos}/>
             </div>
             <div className="player-container">
-                <div className="image-container" style={{backgroundImage: `url(${imageHash[action]})`}}/>
+                <img src={imageHash[action]} alt="player" style={{position: "absolute", width: "100%"}}/>
             </div>
             <UserInterface/>
             {inBattle ? <BattleInterface/> : null}

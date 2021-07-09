@@ -26,10 +26,7 @@ const UserInterface = () => {
     let goldSprite = useSelector(state => state.images.items.gold[0])
 
     const keyPress = debounce(e => {
-        const chatbox = document.querySelector(".chatbox")
-        if (e.key === " ") {
-            chatbox.scrollTop = chatbox.scrollHeight
-        } else if (e.key === "Escape") {
+        if (e.key === "Escape") {
             dispatch(toggleLogMenu())
         } else if (e.key === "k") {
             dispatch(toggleSkillsMenu())
@@ -45,13 +42,18 @@ const UserInterface = () => {
         return () => window.removeEventListener("keydown", keyPress)
     }, [keyPress])
 
+    useEffect(() => {
+        const chatbox = document.querySelector(".chatbox")
+        chatbox.scrollTop = chatbox.scrollHeight
+    })
+
     // Change hp/mp bar color depending on current hp/mp
     const hpColor = () => {
         const health = stats.current_hp/stats.hp
         if (health <= 0.3) {
             return "red"
         } else if (health <= 0.7) {
-            return "yellow"
+            return "#b1b108"
         }
         return "green"
     }

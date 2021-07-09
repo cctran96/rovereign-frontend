@@ -1,6 +1,7 @@
 const initialState = {
     characters: [],
-    skills: {}
+    skills: {},
+    items: {}
 }
 
 export const gameDataReducer = (state = initialState, action) => {
@@ -9,6 +10,8 @@ export const gameDataReducer = (state = initialState, action) => {
             return {...state, characters: action.characters}
         case "SKILL_DATA":
             return {...state, skills: action.skills}
+        case "ITEM_DATA":
+            return {...state, items: action.items}
         default:
             return state
     }

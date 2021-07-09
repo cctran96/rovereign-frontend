@@ -7,6 +7,7 @@ const InventoryMenu = ({player}) => {
     const show = useSelector(state => state.menu.inventory)
     const images = useSelector(state => state.images.items.items)
     const inBattle = useSelector(state => state.battle.inBattle)
+    // const itemInfo = useSelector(state => )
 
     const inventory = () => {
         let placeholder = [...player.inventory]
@@ -18,16 +19,12 @@ const InventoryMenu = ({player}) => {
 
     const itemImage = item => {
         if (!item.item) return
-        const image = images.find(img => img.includes(item.item.name))
+        const image = images.find(img => img.includes(item.item))
         return image
     }
 
     const handleClick = item => {
-        if (inBattle) dispatch(selectMove({item: item}))
-    }
-
-    const formattedName = item => {
-        return item.item.name
+        if (inBattle && item.item) dispatch(selectMove({item: item.item}))
     }
 
     return (
@@ -39,7 +36,7 @@ const InventoryMenu = ({player}) => {
                         key={idx} 
                         className="item-icon" 
                         style={{backgroundImage: `url(${itemImage(item)})`}}
-                        onClick={() => handleClick(formattedName(item))}
+                        onClick={() => handleClick(item)}
                     >
                         <p style={{color: "white", transform: "translateY(-15px)"}}>{item.amount}</p>
                     </div>

@@ -120,9 +120,9 @@ const arrowVar = {
 }
 
 const fakeInv = [
-    {amount: 3, item: {name: "health_potion", description: "A concentrated potion made out of pity berries.", effect: {craft: ["5 pity_berry"], increase: {hp: 30}}}},
-    {amount: 3, item: {name: "mana_potion", description: "A concentrated potion made out of cerebral berries.", effect: {craft: ["5 cerebral_berry"], increase: {mp: 30}}}},
-    {amount: 3, item: {name: "strength_potion", description: "A concentrated potion made out of renal berries.", effect: {craft: ["5 renal_berry"], increase: {str: 10}}}},
-    {amount: 3, item: {name: "range_potion", description: "A concentrated potion made out of nympha berries.", effect: {craft: ["5 nympha_berry"], increase: {dex: 10}}}},
-    {amount: 3, item: {name: "magic_potion", description: "A concentrated potion made out of pimple berries.", effect: {craft: ["5 pimple_berry"], increase: {int: 10}}}}
+    {amount: 3, item: "health_potion"},
+    {amount: 3, item: "mana_potion"},
+    {amount: 3, item: "strength_potion"},
+    {amount: 3, item: "range_potion"},
+    {amount: 3, item: "magic_potion"}
 ]

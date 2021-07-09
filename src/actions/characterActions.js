@@ -69,6 +69,9 @@ export const createCharacter = (user_id, name, role, oldChars, callback) => {
 export const logOutCharacter = () => {
     return dispatch => {
         dispatch({ type: "SELECT_CHARACTER", character: null })
-        dispatch({ type: "ALL_MENUS"})
+        dispatch({ type: "ALL_MENUS" })
+        dispatch({ type: "RESET_BATTLE"})
+        dispatch({ type: "PLAYER_STANCE", stance: "idle" })
+        dispatch({ type: "MONSTER_STANCE", stance: "idle" })
     }
 }

@@ -1,6 +1,6 @@
-export const startBattle = (monster, player) => {
+export const startBattle = (monster) => {
     return dispatch => {
-        dispatch({ type: "START_BATTLE", inBattle: true, monster, player })
+        dispatch({ type: "START_BATTLE", inBattle: true, monster })
     }
 }
 
@@ -25,5 +25,11 @@ export const setCurrentMonster = monster => {
 export const resetBattle = () => {
     return dispatch => {
         dispatch({ type: "RESET_BATTLE" })
+    }
+}
+
+export const changeDisplay = display => {
+    return dispatch => {
+        dispatch({ type: "DISPLAY", display })
     }
 }
