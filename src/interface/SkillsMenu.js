@@ -7,6 +7,7 @@ const SkillsMenu = ({player}) => {
     const show = useSelector(state => state.menu.skills)
     const images = useSelector(state => state.images.skills[skillHash[player.role]])
     const inBattle = useSelector(state => state.battle.inBattle)
+    const display = useSelector(state => state.battle.display)
     const skills = useSelector(state => state.details.skills.filter(s => s.character === player.role && player.level >= s.level))
    
     const skillset = () => {
@@ -23,7 +24,9 @@ const SkillsMenu = ({player}) => {
     }
 
     const handleClick = skill => {
-        if (inBattle) dispatch(selectMove({skill: skill}))
+        const mpCheck = skill.effect.mp <= player.stats.current_mp
+        if (inBattle && !display && mpCheck) dispatch(selectMove({skill: formattedName(skill)}))
+        if (!mpCheck) dispatch(selectMove({error: "NOT ENOUGH MANA"}))
     }
 
     const formattedName = skill => {
@@ -39,7 +42,7 @@ const SkillsMenu = ({player}) => {
                         key={idx} 
                         className="skill-icon" 
                         style={{backgroundImage: `url(${skillImage(skill)})`}}
-                        onClick={() => handleClick(formattedName(skill))}
+                        onClick={() => handleClick(skill)}
                     />
                 )
             })}

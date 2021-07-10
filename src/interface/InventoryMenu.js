@@ -7,10 +7,12 @@ const InventoryMenu = ({player}) => {
     const show = useSelector(state => state.menu.inventory)
     const images = useSelector(state => state.images.items.items)
     const inBattle = useSelector(state => state.battle.inBattle)
-    // const itemInfo = useSelector(state => )
+    const display = useSelector(state => state.battle.display)
+    const allItems= useSelector(state => state.details.items)
 
     const inventory = () => {
         let placeholder = [...player.inventory]
+        placeholder = placeholder.filter(i => i.amount > 0)
         while (placeholder.length < 28) {
             placeholder.push({})
         }
@@ -24,7 +26,10 @@ const InventoryMenu = ({player}) => {
     }
 
     const handleClick = item => {
-        if (inBattle && item.item) dispatch(selectMove({item: item.item}))
+        if (!display && inBattle && item.item) {
+            allItems.find(i => i.name === item.item).effect ?
+            dispatch(selectMove({item: item.item})) : console.log()
+        }
     }
 
     return (

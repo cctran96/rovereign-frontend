@@ -8,6 +8,7 @@ import { gameDataReducer } from "./gameData"
 import { monsterReducer } from "./monster"
 import { battleReducer } from "./battle"
 import { stanceReducer } from "./stance"
+import { mapReducer } from "./map"
 
 const rootReducer = combineReducers({
     user: loginReducer,
@@ -18,7 +19,8 @@ const rootReducer = combineReducers({
     details: gameDataReducer,
     monsters: monsterReducer,
     battle: battleReducer,
-    stance: stanceReducer
+    stance: stanceReducer,
+    map: mapReducer
 })
 
 export default rootReducer

@@ -32,14 +32,13 @@ export const updateInventory = (currentPlayer, obj, oldChars) => {
     }
 }
 
-export const updateCharacter = (currentPlayer, obj, oldChars) => {
+export const updateCharacter = (currentPlayer, obj, oldChars, stats) => {
     return dispatch => {
         const player = oldChars.find(c => c.id === currentPlayer.id)
         const body = () => {
             let update = {...obj}
-            Object.keys(update).forEach(key => {
-                update = {...update, [key]: player[key] + update[key]}
-            })
+            Object.keys(update).forEach(key => update = {...update, [key]: player[key] + update[key]})
+            if (stats) update.stats = stats
             return update
         }
         const config = {
@@ -62,16 +61,15 @@ export const updateCharacter = (currentPlayer, obj, oldChars) => {
     }
 }
 
-export const updateCharAndInventory = (currentPlayer, charObj, invObj, oldChars) => {
+export const updateCharAndInventory = (currentPlayer, charObj, invObj, oldChars, stats) => {
     return dispatch => {
         const player = oldChars.find(c => c.id === currentPlayer.id)
 
         // config for updating character
         const charBody = () => {
             let update = {...charObj}
-            Object.keys(update).forEach(key => {
-                update = {...update, [key]: player[key] + update[key]}
-            })
+            Object.keys(update).forEach(key => update = {...update, [key]: player[key] + update[key]})
+            if (stats) update.stats = stats
             return update
         }
         const charConfig = {

@@ -73,5 +73,6 @@ export const logOutCharacter = () => {
         dispatch({ type: "RESET_BATTLE"})
         dispatch({ type: "PLAYER_STANCE", stance: "idle" })
         dispatch({ type: "MONSTER_STANCE", stance: "idle" })
+        dispatch({ type: "CHAT", chat: [] })
     }
 }

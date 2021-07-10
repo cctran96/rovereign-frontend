@@ -1012,3 +1012,46 @@ body::-webkit-scrollbar {
     position: absolute;
     z-index: 1;
 }
+
+.battle-item {
+    width: 35px;
+    height: 35px;
+    position: absolute;
+    top: 70%;
+    left: -50px;
+    background-repeat: no-repeat;
+    background-size: cover;
+    opacity: 0.8;
+    border-radius: 50px;
+}
+
+.victory {
+    position: absolute;
+    top: -500px;
+    width: 100%;
+    height: 500px;
+    z-index: 3;
+    background-color: rgba(255, 255, 255, 0.8);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.victory h2 {
+    font-size: 60px;
+    color: rgb(90, 3, 90);
+}
+
+.victory-btn {
+    width: 180px;
+    height: 40px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.victory-btn:hover {
+    background-color: gold;
+}

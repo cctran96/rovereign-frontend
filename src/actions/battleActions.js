@@ -33,3 +33,9 @@ export const changeDisplay = display => {
         dispatch({ type: "DISPLAY", display })
     }
 }
+
+export const setUseItem = item => {
+    return dispatch => {
+        dispatch({ type: "USE_ITEM", item })
+    }
+}

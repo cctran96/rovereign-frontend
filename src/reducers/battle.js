@@ -2,7 +2,8 @@ const initialState = {
     inBattle: false,
     monster: {},
     selection: null,
-    display: false
+    display: false,
+    item: null
 }
 
 export const battleReducer = (state = initialState, action) => {
@@ -19,6 +20,8 @@ export const battleReducer = (state = initialState, action) => {
             return {...state, selection: null, inBattle: false, monster: {}}
         case "DISPLAY":
             return {...state, display: action.display}
+        case "USE_ITEM":
+            return {...state, item: action.item}
         default:
             return state
     }

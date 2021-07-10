@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react"
 import { useSelector, useDispatch } from "react-redux"
 import { motion } from "framer-motion"
-import { selectMove, endBattle, changeDisplay, setCurrentMonster } from "../actions/battleActions"
+import { selectMove, endBattle, changeDisplay, setCurrentMonster, setUseItem } from "../actions/battleActions"
 import { changePlayerStance, changeMonsterStance } from "../actions/stanceActions"
 import { setCurrentCharacter } from "../actions/characterActions"
 import { updateChatBox } from "../actions/menuAction"
+import { setVictory } from "../actions/mapActions"
 import { AiFillCaretRight } from "react-icons/ai/index.esm"
 
 const BattleInterface = () => {
@@ -22,19 +23,23 @@ const BattleInterface = () => {
 
     // Grab battle states from store and destructure
     const state = useSelector(state => state.battle)
-    const { inBattle, monster, selection, display }  = state
+    const { inBattle, monster, selection, display, item }  = state
     const player = useSelector(state => state.characters.currentCharacter)
-    const stats = player.stats
+    const {stats, inventory} = player
 
     // Destructure items and skills info from details state
     const details = useSelector(state => state.details)
     const { items, skills } = details
+    const itemImages = useSelector(state => state.images.items.items)
 
     // Grab frame information from store
     const imageInfo = useSelector(state => state.images.typeInfo)
     const monFrames = imageInfo[monster.name.split("_")[1]]
-    const formattedMonName = monster.name.split("_").map(w => w[0].toUpperCase() + w.slice(1)).join(" ")
     const playerFrames = imageInfo[player.role]
+
+    // Format names of monsters/skills/potions to look pretty
+    const formatName = name => name.split("_").map(w => w[0].toUpperCase() + w.slice(1)).join(" ")
+    const formattedMonName = formatName(monster.name)
 
     // Color of monster bars
     const hpColor = () => {
@@ -82,6 +87,7 @@ const BattleInterface = () => {
             return Math.floor((((2 * player.level + 10)/2) + ((stats.int/(monster.def/2)) + 2) + skill) * mult * crit)
         }
     }
+
     // Calculates damage monster does on player
     const calculateMonsterDamage = () => {
         let crit = isCrit(monster.cri) ? 2 : 1
@@ -94,25 +100,28 @@ const BattleInterface = () => {
         }
     }
 
-    const monsterAttack = callback => {
+    // Default attack
+    const monsterAttack = (playerObj, callback) => {
         const damage = calculateMonsterDamage()
-        const playDiff = stats.current_hp - damage
+        const playDiff = playerObj ? playerObj.stats.current_hp - damage : stats.current_hp - damage
+        let newPlayerObj = playerObj ? playerObj : player
+        newPlayerObj = {...newPlayerObj, stats: {...newPlayerObj.stats, current_hp: playDiff > 0 ? playDiff : 0}}
         dispatch(changeDisplay(true))
         dispatch(changeMonsterStance("attack"))
         setTimeout(() => {
             dispatch(changeMonsterStance("idle"))
             dispatch(changePlayerStance(playDiff > 0 ? "hurt" : "die"))
-            dispatch(setCurrentCharacter({...player, stats: {...stats, current_hp: playDiff > 0 ? playDiff : 0}}))
+            dispatch(setCurrentCharacter(newPlayerObj))
             if (playDiff > 0) {
                 setDialogue({Notice: `The ${formattedMonName} deals ${damage} damage to you.`})
                 setTimeout(() => {
                     dispatch(changePlayerStance("idle"))
-                    typeof callback === "function" && setTimeout(() => callback(), 300)
+                    typeof callback === "function" && setTimeout(() => callback(newPlayerObj), 300)
                     dispatch(changeDisplay(false))
                 }, playerFrames.hurt * 100)
             } else {
-                setTimeout(() => dispatch(endBattle()), 3000)
                 setDialogue({Notice: `The ${formattedMonName} deals you the final blow, knocking you unconscious.`})
+                setTimeout(() => dispatch(endBattle()), 3000)
             }
         }, monFrames.attack * 100)
     }
@@ -134,11 +143,69 @@ const BattleInterface = () => {
                     dispatch(changeDisplay(false))
                 }, monFrames.hurt * 100)
             } else {
-                setTimeout(() => dispatch(endBattle()), 3000)
                 setDialogue({[player.name]: `You deal the finishing blow. The ${formattedMonName} was no match for you.`})
+                setTimeout(() => dispatch(endBattle()), 3000)
+            }
+        }, playerFrames.attack * 100)
+    }
+
+    const playerSkillAttack = (skill, playerObj, callback) => {
+        const mp = skill.effect.mp
+        const damage = calculatePlayerDamage(skill.effect.attack.damage)
+        const monDiff = monster.current_hp - damage
+        let newPlayerObj = playerObj ? playerObj : player
+        newPlayerObj = {...newPlayerObj, stats: {...newPlayerObj.stats, current_mp: newPlayerObj.stats.current_mp - mp}}
+        dispatch(changeDisplay(true))
+        dispatch(changePlayerStance("attack"))
+        dispatch(setCurrentCharacter(newPlayerObj))
+        setTimeout(() => {
+            dispatch(changePlayerStance("idle"))
+            dispatch(changeMonsterStance(monDiff > 0 ? "hurt" : "die"))
+            dispatch(setCurrentMonster({...monster, current_hp: monDiff > 0 ? monDiff : 0}))
+            if (monDiff > 0) {
+                setDialogue({[player.name]: `You used ${formatName(skill.name)} on the ${formattedMonName}, dealing ${damage} damage.`})
+                setTimeout(() => {
+                    dispatch(changeMonsterStance("idle"))
+                    typeof callback === "function" && setTimeout(() => callback(newPlayerObj), 300)
+                    dispatch(changeDisplay(false))
+                }, monFrames.hurt * 100)
+            } else {
+                setDialogue({[player.name]: `You used ${formatName(skill.name)} on the ${formattedMonName}, putting an end to it. It had a family...`})
+                setTimeout(() => dispatch(endBattle()), 3000)
             }
             
         }, playerFrames.attack * 100)
+    }
+
+    const playerUseItem = (item, callback) => {
+        dispatch(changeDisplay(true))
+        dispatch(setUseItem(item))
+        setTimeout(() => {
+            const obj = item.effect.increase
+            const key = Object.keys(obj)[0]
+            const current = `current_${key}`
+            const total = stats[current] + obj[key]
+            const newTotal = total > stats[key] ? stats[key] : total
+            const inventoryItem = inventory.find(i => i.item === item.name)
+            const updatedItem = {...inventoryItem, amount: inventoryItem.amount - 1}
+            const newInv = inventory.map(i => i.item === item.name ? updatedItem : i)
+            let newPlayerObj
+            if (key === "hp" || key === "mp") {
+                newPlayerObj = {...player, stats: {...stats, [current]: newTotal}, inventory: newInv}
+                dispatch(setCurrentCharacter(newPlayerObj))
+                setDialogue({[player.name]: `You take a sip of your ${formatName(item.name)}. You feel reinvigorated.`})
+            } else {
+                const value = Object.values(obj)[0]
+                newPlayerObj = {...player, stats: {...stats, [key]: stats[key] + value}, inventory: newInv}
+                dispatch(setCurrentCharacter(newPlayerObj))
+                setDialogue({[player.name]: `You take a sip of your ${formatName(item.name)}, increasing your ${key.toUpperCase()} by ${value}.`})
+            }
+            setTimeout(() => {
+                dispatch(setUseItem(null))
+                typeof callback === "function" && setTimeout(() => callback(newPlayerObj), 300)
+                dispatch(changeDisplay(false))
+            }, 700)
+        }, 2000)
     }
 
     // Action for when using default attack
@@ -147,24 +214,37 @@ const BattleInterface = () => {
         if (stats.spd > monster.spd) {
             playerAttack(monsterAttack)
         } else {
-            monsterAttack(playerAttack)
+            monsterAttack(null, playerAttack)
         }
     }
 
     // Action for when using a skill
     const confirmSkill = () => {
-        console.log("skill")
+        const name = Object.values(selection)[0]
+        const skill = skills.find(s => s.name === name)
+        storeSelectedMove(null)
+        if (skill.effect.attack) {
+            if (stats.spd >= monster.spd) {
+                playerSkillAttack(skill, null, monsterAttack)
+            } else {
+                monsterAttack(null, (playerObj) => playerSkillAttack(skill, playerObj))
+            }
+        }
     }
 
     // Action for when using an item
     const confirmItem = () => {
         const name = Object.values(selection)[0]
-        const effect = items.find(i => i.name === name).effect
-        console.log(effect)
+        const item = items.find(i => i.name === name)
+        storeSelectedMove(null)
+        if (item.effect.increase) {
+            playerUseItem(item, monsterAttack)
+        }
     }
 
     // Checks for which action is selected and confirms the move
     const confirmMove = () => {
+        dispatch({ type: "ALL_MENUS" })
         switch(Object.keys(selection)[0]) {
             case "default":
                 confirmDefault()
@@ -226,6 +306,15 @@ const BattleInterface = () => {
                     </motion.button>
                 </>
             }
+            {   item ? 
+                <motion.div 
+                className="battle-item"
+                animate={itemVar}
+                style={{
+                    backgroundImage: `url(${itemImages.find(i => i.includes(item.name))})`,
+                }}/> 
+                : null
+            }
         </div> : null
     )
 }
@@ -246,4 +335,10 @@ const monsterVar = {
 const defaultVar = {
     start: {opacity: 0},
     end: {opacity: 1, transition: {delay: 1, duration: 0.5}}
+}
+
+const itemVar = {
+    y: [-1000, 25, -25, 25, 0, 0],
+    x: [420, 420, 420, 420, 420, 0],
+    transition: {duration: 2, times: []}
 }

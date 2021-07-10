@@ -5,7 +5,6 @@ import { updateChatBox } from "../actions/menuAction"
 import { debounce } from "../helpers/debounce"
 import { motion } from "framer-motion"
 import { ImArrowDownRight, ImArrowLeft } from "react-icons/im/index.esm"
-import UserInterface from "../interface/UserInterface"
 
 const Intro = ({player}) => {
     // Grab seller image and characters from store
@@ -42,12 +41,11 @@ const Intro = ({player}) => {
 
     // Adds next dialogue to chatbox
     const keyPress = debounce(e => {
-        const chatbox = document.querySelector(".chatbox")
         if (e.key === " " && dialogue && dialogue.length) {
             dispatch(updateChatBox([...chat, dialogue[0]]))
             setDialogue(dialogue.slice(1))
-            chatbox.scrollTop = chatbox.scrollHeight
         }
+        return
     }, 100)
 
     useEffect(() => {
@@ -75,7 +73,7 @@ const Intro = ({player}) => {
             default:
                 setArrow(null)
         }
-    }, [dialogue, dispatch, currentCharacter])
+    }, [dialogue, dispatch])
 
     const confirmEndTutorial = () => {
         const obj = {
@@ -90,7 +88,13 @@ const Intro = ({player}) => {
     }
 
     return (
-        <div className="introduction" style={{backgroundColor: "gray"}}>
+        <motion.div 
+            className="introduction" 
+            style={{backgroundColor: "gray"}}
+            initial="start"
+            animate="end"
+            variants={fadeIn}
+        >
             <div className="seller" style={{backgroundImage: `url(${sellers[0]})`}}/>
             {   !dialogue.length ? 
                 <div className="end-tutorial" onClick={confirmEndTutorial}>
@@ -98,7 +102,6 @@ const Intro = ({player}) => {
                     <ImArrowLeft size={40}/>
                 </div> : null
             }
-            <UserInterface/>
             <motion.div 
                 className="arrow" 
                 variants={arrowVar} 
@@ -106,7 +109,7 @@ const Intro = ({player}) => {
             >
                 <ImArrowDownRight size={40} color="white"/>
             </motion.div>
-        </div>
+        </motion.div>
     )
 }
 
@@ -126,3 +129,8 @@ const fakeInv = [
     {amount: 3, item: "range_potion"},
     {amount: 3, item: "magic_potion"}
 ]
+
+const fadeIn = {
+    start: {opacity: 0},
+    end: {opacity: 1, transition: {duration: 1, ease: "easeInOut"}}
+}
