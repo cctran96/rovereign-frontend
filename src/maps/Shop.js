@@ -11,6 +11,11 @@ const Shop = () => {
         dispatch(updateChatBox([{Kyle: "Welcome back to Amazen."}]))
     }, [])
 
+    // Objects for each map
+    const obj = {
+        
+    }
+
     return (
         <motion.div 
             className="introduction" 
