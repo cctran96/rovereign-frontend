@@ -1,6 +1,6 @@
 import React, { useEffect } from "react"
 import { useDispatch } from "react-redux"
-import { BrowserRouter as Router, Route } from "react-router-dom"
+import { BrowserRouter as Router, Route, Switch} from "react-router-dom"
 import { fetchProfile } from "./actions/accountActions"
 import { imageInfo, importImages, fetchExperienceThreshold } from "./actions/gameImageActions"
 import { importCharacterDetails, importSkillDetails, importItemDetails } from "./actions/gameDataActions"
@@ -28,10 +28,12 @@ const App = () => {
     return (
         <Router>
             <Navbar/>
-            <Route exact path="/" render={() => <Home/>}/>
-            <Route exact path="/wiki" render={() => <Wiki/>}/>
-            <Route exact path="/play" render={() => <Game/>}/>
-            <Route exact path="/login" render={() => <Login/>}/>
+            <Switch>
+                <Route exact path="/" render={() => <Home/>}/>
+                <Route path="/wiki" render={() => <Wiki/>}/>
+                <Route path="/play" render={() => <Game/>}/>
+                <Route path="/login" render={() => <Login/>}/>
+            </Switch>
         </Router>
     )
 }

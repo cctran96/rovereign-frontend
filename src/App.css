@@ -17,20 +17,6 @@ body::-webkit-scrollbar {
     box-sizing: border-box;
 }
 
-.ani-logo {
-    width: 100vw;
-    height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: #020225;
-}
-
-.ani-logo svg {
-    height: 300px;
-    animation: fil 0.8s ease-in 1s;
-}
-
 .navbar {
     z-index: 9998;
     height: 55px;
@@ -73,7 +59,7 @@ body::-webkit-scrollbar {
     align-items: center;
 }
 
-.navlinks a, .menu-links a {
+.navlinks a, .menu-links a, .wiki-nav a {
     text-decoration: none;
     color: rgb(8, 156, 167);
     margin: 15px;
@@ -1057,6 +1043,82 @@ body::-webkit-scrollbar {
 }
 
 .wiki-page {
-    border: 1px solid red;
+    border: 1px solid transparent;
     height: 100vh;
+}
+
+.wiki-nav {
+    margin-top: 55px;
+    width: 100%;
+    font-family: Copperplate, "Copperplate Gothic Light", fantasy;
+    font-size: 25px;
+    display: flex;
+    justify-content: space-around;
+    position: fixed;
+}
+
+.wiki-container {
+    height: calc(100% - 120px);
+    margin-top: 120px;
+    overflow-y: scroll;
+    display: flex;
+    justify-content: center;
+}
+
+.wiki-container::-webkit-scrollbar {
+    width: 0;
+}
+
+.wiki-table td, .wiki-table th{
+    border: 2px solid black;
+    padding: 20px;
+}
+
+.wiki-class-container {
+    width: 100%;
+    max-width: 1500px;
+}
+
+.class-container {
+    min-height: 500px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.wiki-characters-container {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.wiki-character {
+    height: 400px;
+    width: 400px;
+    overflow: hidden;
+    position: relative;
+}
+
+.wiki-char {
+    background-size: contain;
+    background-repeat: no-repeat;
+    height: 500px;
+    width: 550px;
+}
+
+.wiki-character p {
+    font-size: 20px;
+    font-weight: bold;
+    position: absolute;
+    top: 0;
+    left: 20%;
+}
+
+.wiki-mon {
+    background-size: contain;
+    background-repeat: no-repeat;
+    height: 300px;
+    width: 500px;
+    margin-top: 50px;
 }

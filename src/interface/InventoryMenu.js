@@ -21,7 +21,7 @@ const InventoryMenu = ({player}) => {
 
     const itemImage = item => {
         if (!item.item) return
-        const image = images.find(img => img.includes(item.item))
+        const image = images.find(img => img.split(/[/|.]/)[3] === item.item)
         return image
     }
 

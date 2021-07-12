@@ -311,7 +311,7 @@ const BattleInterface = () => {
                 className="battle-item"
                 animate={itemVar}
                 style={{
-                    backgroundImage: `url(${itemImages.find(i => i.includes(item.name))})`,
+                    backgroundImage: `url(${itemImages.find(i => i.split(/[/|.]/)[3] === item.name)})`,
                 }}/> 
                 : null
             }

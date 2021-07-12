@@ -1,7 +1,7 @@
 const initialState = {
     characters: [],
-    skills: {},
-    items: {}
+    skills: [],
+    items: []
 }
 
 export const gameDataReducer = (state = initialState, action) => {
