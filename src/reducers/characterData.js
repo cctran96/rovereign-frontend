@@ -8,7 +8,7 @@ const initialState = {
 export const characterReducer = (state = initialState, action) => {
     switch(action.type) {
         case "SET_CHARACTERS":
-            return {...state, characters: action.characters}
+            return {...state, characters: action.characters, errors: null}
         case "SELECT_CHARACTER":
             return {...state, currentCharacter: action.character}
         case "SET_DELETED":

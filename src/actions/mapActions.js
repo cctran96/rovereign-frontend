@@ -10,7 +10,7 @@ export const setCurrentMap = (map, monsters, dialogue) => {
     }
 }
 
-export const updateMapMonstters = monsters => {
+export const updateMapMonsters = monsters => {
     return dispatch => {
         dispatch({ type: "MAP_MONSTERS", monsters })
     }
@@ -31,5 +31,6 @@ export const updateMapDrops = drops => {
 export const goBackToTown = () => {
     return dispatch => {
         dispatch({ type: "RESET_MAP" })
+        dispatch({ type: "MONSTER_STANCE", stance: "idle" })
     }
 }

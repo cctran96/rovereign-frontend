@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from "react"
+import BattleInterface from "../interface/BattleInterface"
+import MonsterSprite from "../components/MonsterSprite"
 import { useSelector, useDispatch } from "react-redux"
 import { useKeyDown, useKeyUp } from "../helpers/useKeyPress"
 import { updateChatBox } from "../actions/menuAction"
 import { startBattle } from "../actions/battleActions"
 import { changePlayerStance } from "../actions/stanceActions"
 import { updateCharacter } from "../actions/playerActions"
+import { goBackToTown } from "../actions/mapActions"
 import { motion } from "framer-motion"
-import BattleInterface from "../interface/BattleInterface"
-import MonsterSprite from "../components/MonsterSprite"
 import { FaArrowAltCircleLeft } from "react-icons/fa/index.esm"
+import { updateMapMonsters } from "../actions/mapActions"
 
 const BattleIntro = ({player}) => {
     const [hover, setHover] = useState(false)
@@ -59,9 +61,7 @@ const BattleIntro = ({player}) => {
         die: findImage("die"),
         hurt: findImage("hurt"),
         idle: findImage("idle"),
-        jump: findImage("jump"),
         run: findImage("run"),
-        walk: findImage("walk")
     }
 
     const stepSize = 24
@@ -73,8 +73,8 @@ const BattleIntro = ({player}) => {
         switch(e.key) {
             case "d":
             case "ArrowRight":
-                setMap1Pos(map1 <= -888 ? 880 : map1)
-                setMap2Pos(map2 <= -888 ? 880 : map2)
+                setMap1Pos(map1 <= -888 ? 888 : map1)
+                setMap2Pos(map2 <= -888 ? 888 : map2)
                 setMonPos(mon)
                 mon === 640 ? handleAmbush() : console.log()
                 dispatch(changePlayerStance((mon === 640 ? "idle" : "run")))
@@ -103,6 +103,7 @@ const BattleIntro = ({player}) => {
         
         dispatch(startBattle(obj))
         dispatch(updateChatBox([...chat, {Notice: "You've been ambushed by a Vang Satyr!"}]))
+        dispatch(updateMapMonsters([obj]))
     }
 
     const oldChars = useSelector(state => state.characters.characters)
@@ -115,6 +116,9 @@ const BattleIntro = ({player}) => {
         let stats = {...oldPlayer.stats}
         Object.keys(stats).forEach(key => key === "cri" ? stats = {...stats, cri: stats.cri + 1} : stats = {...stats, [key]: stats[key] + 5})
         dispatch(updateCharacter(player, obj, oldChars, stats))
+        setTimeout(() => {
+            dispatch(goBackToTown())
+        }, 2000)
     }
 
     useKeyUp(() => !inBattle ? dispatch(changePlayerStance(("idle"))) : null)

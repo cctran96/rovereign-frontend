@@ -12,8 +12,6 @@ const MonsterSprite = ({ monster, position }) => {
         die: findImage("die"),
         hurt: findImage("hurt"),
         idle: findImage("idle"),
-        taunt: findImage("taunt"),
-        walk: findImage("walk")
     }
 
     return (
@@ -26,7 +24,7 @@ const MonsterSprite = ({ monster, position }) => {
                     height: `${imgSize(1)}px`,
                     transform: `translate3d(${position}px, 0, 0) scaleX(-1)`,
                     position: "absolute",
-                    bottom: "-25px"
+                    bottom: 0
                 }}
                 alt="monster"
             />

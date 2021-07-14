@@ -53,7 +53,7 @@ export const createCharacter = (user_id, name, role, oldChars, callback) => {
             if (data.errors) {
                 let errors = []
                 data.errors.name.forEach(e => errors.push(`Name ${e}`))
-                errors = errors.map(e => e.includes("short") ? "Name is too short" : e)
+                errors = errors.map(e => e.includes("short" || "long") ? "Name must be 5-8 characters." : e)
                 dispatch({ type: "NAME_ERROR", errors })
             } else {
                 const idx = oldChars.findIndex(o => !Object.keys(o).length)
@@ -74,5 +74,6 @@ export const logOutCharacter = () => {
         dispatch({ type: "PLAYER_STANCE", stance: "idle" })
         dispatch({ type: "MONSTER_STANCE", stance: "idle" })
         dispatch({ type: "CHAT", chat: [] })
+        dispatch({ type: "RESET_MAP" })
     }
 }

@@ -19,7 +19,7 @@ export const mapReducer = (state = initialState, action) => {
         case "MAP_DROPS":
             return {...state, drops: action.drops}
         case "SET_MAP":
-            return {...state, map: action.map, monsters: action.monster, dialogue: action.dialogue}
+            return {...state, map: action.map, monsters: action.monsters, dialogue: action.dialogue}
         case "RESET_MAP":
             return {...state, map: "amazen", monsters: [], dialogue: [], drops: [], victory: false}
         default:

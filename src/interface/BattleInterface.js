@@ -5,8 +5,8 @@ import { selectMove, endBattle, changeDisplay, setCurrentMonster, setUseItem } f
 import { changePlayerStance, changeMonsterStance } from "../actions/stanceActions"
 import { setCurrentCharacter } from "../actions/characterActions"
 import { updateChatBox } from "../actions/menuAction"
-import { setVictory } from "../actions/mapActions"
 import { AiFillCaretRight } from "react-icons/ai/index.esm"
+import { updateMapMonsters } from "../actions/mapActions"
 
 const BattleInterface = () => {
     // Set disaptch to variable
@@ -15,11 +15,13 @@ const BattleInterface = () => {
     // Grab chat dialogue from store
     const chat = useSelector(state => state.menu.chat)
 
-    // Each time dialogue, changes, the chat in store is updated
+    // Each time the dialogue changes, the chat in store is updated
     const [dialogue, setDialogue] = useState(null)
     useEffect(() => {
         dialogue ? dispatch(updateChatBox([...chat, dialogue])) : console.log()
     }, [dialogue])
+
+    const mapMonsters = useSelector(state => state.map.monsters)
 
     // Grab battle states from store and destructure
     const state = useSelector(state => state.battle)
@@ -144,7 +146,10 @@ const BattleInterface = () => {
                 }, monFrames.hurt * 100)
             } else {
                 setDialogue({[player.name]: `You deal the finishing blow. The ${formattedMonName} was no match for you.`})
-                setTimeout(() => dispatch(endBattle()), 3000)
+                setTimeout(() => {
+                    dispatch(endBattle())
+                    dispatch(updateMapMonsters(mapMonsters.map(m => m.level === monster.level ? {...m, current_hp: 0} : m)))
+                }, 3000)
             }
         }, playerFrames.attack * 100)
     }
@@ -171,7 +176,10 @@ const BattleInterface = () => {
                 }, monFrames.hurt * 100)
             } else {
                 setDialogue({[player.name]: `You used ${formatName(skill.name)} on the ${formattedMonName}, putting an end to it. It had a family...`})
-                setTimeout(() => dispatch(endBattle()), 3000)
+                setTimeout(() => {
+                    dispatch(endBattle())
+                    dispatch(updateMapMonsters(mapMonsters.map(m => m.level === monster.level ? {...m, current_hp: 0} : m)))
+                }, 3000)
             }
             
         }, playerFrames.attack * 100)

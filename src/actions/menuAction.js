@@ -10,9 +10,9 @@ export const toggleSkillsMenu = () => {
     }
 }
 
-export const toggleSettingsMenu = () => {
+export const toggleStatsMenu = () => {
     return dispatch => {
-        dispatch({ type: "SETTINGS_MENU" })
+        dispatch({ type: "STATS_MENU" })
     }
 }
 

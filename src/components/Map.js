@@ -4,9 +4,11 @@ import Intro from "../maps/Intro"
 import BattleIntro from "../maps/BattleIntro"
 import LogOutMenu from "../interface/LogOutMenu"
 import SkillsMenu from "../interface/SkillsMenu"
+import StatsMenu from "../interface/StatsMenu"
 import InventoryMenu from "../interface/InventoryMenu"
 import UserInterface from "../interface/UserInterface"
 import Shop from "../maps/Shop"
+import TravelledMap from "../maps/TravelledMap"
 
 const Map = ({player}) => {
     const actual = useSelector(state => state.characters.characters.find(c => c.id === player.id))
@@ -22,14 +24,15 @@ const Map = ({player}) => {
                 (inBattleTutorial ? 
                     <BattleIntro player={player}/> :
                     (   map === "amazen" ?
-                        <Shop /> :
-                        null
+                        <Shop player={player}/> :
+                        <TravelledMap player={player}/>
                     )
                 )
             }
             <UserInterface/>
             <LogOutMenu/>
             <SkillsMenu player={player}/>
+            <StatsMenu player={player}/>
             <InventoryMenu player={player}/>
         </div>
     )

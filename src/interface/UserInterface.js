@@ -3,8 +3,8 @@ import { useDispatch, useSelector } from "react-redux"
 import { motion } from "framer-motion"
 import { debounce } from "../helpers/debounce"
 import { GiLightBackpack, GiSkills } from "react-icons/gi/index.esm"
-import { RiLogoutBoxLine, RiSettings4Fill } from "react-icons/ri/index.esm"
-import { toggleInventoryMenu, toggleSkillsMenu, toggleSettingsMenu, toggleLogMenu } from "../actions/menuAction"
+import { RiLogoutBoxLine, RiBarChartHorizontalFill } from "react-icons/ri/index.esm"
+import { toggleInventoryMenu, toggleSkillsMenu, toggleStatsMenu, toggleLogMenu } from "../actions/menuAction"
 
 const UserInterface = () => {
     // Grab player from store and destructure
@@ -33,7 +33,7 @@ const UserInterface = () => {
         } else if (e.key === "i") {
             dispatch(toggleInventoryMenu())
         } else if (e.key === "x") {
-            dispatch(toggleSettingsMenu())
+            dispatch(toggleStatsMenu())
         }
     }, 100)
 
@@ -122,8 +122,8 @@ const UserInterface = () => {
                     <div className="ui-icon" onClick={() => dispatch(toggleSkillsMenu())}>
                         <GiSkills size={35} color="#0a0a53"/>
                     </div>
-                    <div className="ui-icon" onClick={() => dispatch(toggleSettingsMenu())}>
-                        <RiSettings4Fill size={35} color="#3f3e3e"/>
+                    <div className="ui-icon" onClick={() => dispatch(toggleStatsMenu())}>
+                        <RiBarChartHorizontalFill size={35} color="#bd4c02"/>
                     </div>
                     <div className="ui-icon" onClick={() => dispatch(toggleLogMenu())}>
                         <RiLogoutBoxLine size={35}/>

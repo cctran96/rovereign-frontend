@@ -13,7 +13,7 @@ export const battleReducer = (state = initialState, action) => {
         case "SET_MONSTER":
             return {...state, monster: action.monster}
         case "END_BATTLE":
-            return{...state, inBattle: false, monster: {}}
+            return{...state, inBattle: false, monster: {}, display: false}
         case "SELECT_MOVE":
             return {...state, selection: action.selection}
         case "RESET_BATTLE":
