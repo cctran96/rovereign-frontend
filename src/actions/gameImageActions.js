@@ -68,9 +68,7 @@ const knight = {
     die: 10,
     hurt: 10,
     idle: 10,
-    jump: 10 ,
-    run: 10,
-    walk: 10
+    run: 10
 }
 
 const archer = {
@@ -79,9 +77,7 @@ const archer = {
     die: 10,
     hurt: 10,
     idle: 10,
-    jump: 10 ,
-    run: 10,
-    walk: 10
+    run: 10
 }
 
 const wizard = {
@@ -90,9 +86,7 @@ const wizard = {
     die: 10,
     hurt: 10,
     idle: 10,
-    jump: 10 ,
-    run: 10,
-    walk: 10
+    run: 10
 }
 
 const typeInfo = {
@@ -101,37 +95,28 @@ const typeInfo = {
         attack: 12,
         die: 15,
         hurt: 12,
-        idle: 12,
-        taunt: 18,
-        walk: 18
+        idle: 12
     },
     golem: {
         size: "720x480",
         attack: 12,
         die: 15,
         hurt: 12,
-        idle: 12,
-        taunt: 18,
-        walk: 18
+        idle: 12
     },
     satyr: {
         size: "520x420",
         attack: 12,
         die: 15,
         hurt: 12,
-        idle: 12,
-        taunt: 18,
-        walk: 18
+        idle: 12
     },
     wraith: {
         size: "520x420",
         attack: 12,
-        cast: 18,
         die: 15,
         hurt: 12,
-        idle: 12,
-        taunt: 18,
-        walk: 12
+        idle: 12
     },
     spearman: knight,
     crusader: knight,

@@ -831,9 +831,10 @@ body::-webkit-scrollbar {
     position: absolute;
     bottom: 25%;
     left: 30.5%;
+    z-index: 1;
 }
 
-.skills-menu, .inventory-menu {
+.skills-menu, .inventory-menu, .stats-menu {
     position: absolute;
     top: 0;
     left: 0;
@@ -851,12 +852,41 @@ body::-webkit-scrollbar {
     width: 50px;
     height: 50px;
     border: 1px solid black;
+}
+
+.skill-icon {
     cursor: pointer;
 }
 
-.inventory-menu {
+.inventory-menu, .stats-menu {
     height: 200px;
     width: 350px;
+}
+
+.stats-menu {
+    background-color: rgba(255, 255, 255, 0.9);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.stats-menu h1 {
+    font-size: 25px;
+    margin-top: 0;
+}
+
+.ui-stats {
+    width: 100%;
+    height: calc(100% - 45px);
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.ui-stat {
+    width: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
 }
 
 .end-tutorial {
@@ -1132,10 +1162,11 @@ body::-webkit-scrollbar {
 .map-name {
     height: 50px;
     margin: 0;
-    border: 1px solid black;
+    border: 1px solid transparent;
     width: 100%;
     transition: 0.3s ease-in-out;
     background-color: rgba(0, 0, 0, 0.4);
+    font-family: Luminari, fantasy;
 }
 
 .map-name:hover {
@@ -1164,4 +1195,44 @@ body::-webkit-scrollbar {
     overflow-y: scroll;
     display: flex;
     flex-wrap: wrap;
+}
+
+.tool-tip {
+    border: 2px solid black;
+    height: 200px;
+    width: 200px;
+    z-index: 10;
+    position: absolute;
+    right: -205px;
+    bottom: -185px;
+    background-color: rgba(136, 183, 213, 0.7);
+    display: flex;
+    flex-direction: column;
+    justify-items: center;
+    align-items: center;
+    text-align: center;
+}
+
+.tool-tip:after, .tool-tip:before {
+	right: 100%;
+	top: 10px;
+	border: solid transparent;
+	content: "";
+	height: 0;
+	width: 0;
+	position: absolute;
+	pointer-events: none;
+}
+
+.tool-tip:after {
+	border-color: rgba(136, 183, 213, 0);
+	border-right-color: rgba(136, 183, 213, 0.7);
+	border-width: 5px;
+	margin-top: -5px;
+}
+.tool-tip:before {
+	border-color: rgba(0, 0, 0, 0);
+	border-right-color: #000000;
+	border-width: 8px;
+	margin-top: -8px;
 }

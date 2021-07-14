@@ -1,6 +1,6 @@
-export const setVictory = victory => {
+export const setResult = result => {
     return dispatch => {
-        dispatch({ type: "VICTORY", victory })
+        dispatch({ type: "RESULT", result })
     }
 }
 
@@ -28,9 +28,16 @@ export const updateMapDrops = drops => {
     }
 }
 
-export const goBackToTown = () => {
+export const updateUsedItems = items => {
+    return dispatch => {
+        dispatch({ type: "MAP_ITEMS", items })
+    }
+}
+
+export const goBackToTown = chat => {
     return dispatch => {
         dispatch({ type: "RESET_MAP" })
         dispatch({ type: "MONSTER_STANCE", stance: "idle" })
+        if (chat) dispatch({ type: "CHAT", chat })
     }
 }

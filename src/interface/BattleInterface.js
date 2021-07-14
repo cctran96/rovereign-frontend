@@ -6,7 +6,7 @@ import { changePlayerStance, changeMonsterStance } from "../actions/stanceAction
 import { setCurrentCharacter } from "../actions/characterActions"
 import { updateChatBox } from "../actions/menuAction"
 import { AiFillCaretRight } from "react-icons/ai/index.esm"
-import { updateMapMonsters } from "../actions/mapActions"
+import { updateMapMonsters, updateUsedItems } from "../actions/mapActions"
 
 const BattleInterface = () => {
     // Set disaptch to variable
@@ -22,6 +22,7 @@ const BattleInterface = () => {
     }, [dialogue])
 
     const mapMonsters = useSelector(state => state.map.monsters)
+    const usedItems = useSelector(state => state.map.items)
 
     // Grab battle states from store and destructure
     const state = useSelector(state => state.battle)
@@ -197,6 +198,9 @@ const BattleInterface = () => {
             const inventoryItem = inventory.find(i => i.item === item.name)
             const updatedItem = {...inventoryItem, amount: inventoryItem.amount - 1}
             const newInv = inventory.map(i => i.item === item.name ? updatedItem : i)
+            let items = {...usedItems}
+            items[item.name] = (items[item.name] || 0) + 1
+            dispatch(updateUsedItems(items))
             let newPlayerObj
             if (key === "hp" || key === "mp") {
                 newPlayerObj = {...player, stats: {...stats, [current]: newTotal}, inventory: newInv}
@@ -252,7 +256,7 @@ const BattleInterface = () => {
 
     // Checks for which action is selected and confirms the move
     const confirmMove = () => {
-        dispatch({ type: "ALL_MENUS" })
+        selection.error ? console.log() : dispatch({ type: "ALL_MENUS" })
         switch(Object.keys(selection)[0]) {
             case "default":
                 confirmDefault()

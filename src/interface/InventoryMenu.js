@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useEffect, useState } from "react"
 import { useSelector, useDispatch } from "react-redux"
 import { selectMove } from "../actions/battleActions"
 
@@ -9,6 +9,8 @@ const InventoryMenu = ({player}) => {
     const inBattle = useSelector(state => state.battle.inBattle)
     const display = useSelector(state => state.battle.display)
     const allItems= useSelector(state => state.details.items)
+
+    const [hoveredItem, setHoveredItem] = useState(null)
 
     const inventory = () => {
         let placeholder = [...player.inventory]
@@ -32,18 +34,37 @@ const InventoryMenu = ({player}) => {
         }
     }
 
+    const handleHover = e => {
+        const item = e.target.closest("div").getAttribute("item")
+        if (item) setHoveredItem(item)
+    }
+
+    useEffect(() => {
+        if (!show) setHoveredItem(null)
+    }, [show])
+
     return (
         show ?
         <div className="inventory-menu">
             {inventory().map((item, idx) => {
+                const found = allItems.find(i => i.name === item.item)
                 return (
                     <div 
                         key={idx} 
                         className="item-icon" 
-                        style={{backgroundImage: `url(${itemImage(item)})`}}
+                        style={{backgroundImage: `url(${itemImage(item)})`, position: "relative", cursor: found && found.effect ? "pointer" : "default"}}
                         onClick={() => handleClick(item)}
+                        item={item.item}
+                        onMouseEnter={handleHover}
+                        onMouseLeave={() => setHoveredItem(null)}
                     >
                         <p style={{color: "white", transform: "translateY(-15px)"}}>{item.amount}</p>
+                        {   found ?
+                            <div className="tool-tip" style={{display: hoveredItem === item.item ? "block" : "none"}}>
+                                <div className="item-icon" style={{marginTop: "10px", marginLeft: "75px", backgroundImage: `url(${itemImage(item)})`}}/>
+                                <p>{found.description}</p>
+                            </div> : null
+                        }
                     </div>
                 )
             })}

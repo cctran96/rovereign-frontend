@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { useKeyDown, useKeyUp } from "../helpers/useKeyPress"
 import { getRandom } from "../helpers/getRandom"
 import { changePlayerStance, changeMonsterStance } from "../actions/stanceActions"
-import { updateMapMonsters, updateMapDrops, setVictory, goBackToTown } from "../actions/mapActions"
+import { updateMapMonsters, updateMapDrops, setResult, goBackToTown } from "../actions/mapActions"
 import { setCurrentCharacter } from "../actions/characterActions"
 import { updateCharAndInventory } from "../actions/playerActions"
 import { startBattle } from "../actions/battleActions"
@@ -17,7 +17,7 @@ const TravelledMap = ({ player }) => {
     const dispatch = useDispatch()
     const state = useSelector(state => state.map)
 
-    const { victory, monsters, map, drops } = state
+    const { result, monsters, map, drops, items } = state
     const [hover, setHover] = useState(false)
     const [map1Pos, setMap1Pos] = useState(0)
     const [map2Pos, setMap2Pos] = useState(888)
@@ -71,19 +71,30 @@ const TravelledMap = ({ player }) => {
         }
     }
 
-    useKeyUp(() => !victory ? (!inBattle ? dispatch(changePlayerStance(("idle"))) : null) : null)
-    useKeyDown(e => !victory ? (!inBattle ? switchAction(e) : null) : dispatch(changePlayerStance(("idle"))))
+    useKeyUp(() => !result ? (!inBattle ? dispatch(changePlayerStance(("idle"))) : null) : null)
+    useKeyDown(e => !result ? (!inBattle ? switchAction(e) : null) : dispatch(changePlayerStance(("idle"))))
+
     useEffect(() => {
-        monsters.every(monster => monster.current_hp === 0) ? dispatch(setVictory(true)) : console.log()
+        if (monsters.every(monster => monster.current_hp === 0)) dispatch(setResult("victory"))
     }, [monsters, dispatch])
+
+    useEffect(() => {
+        if (player.stats.current_hp === 0) dispatch(setResult("defeat"))
+    },[player, dispatch])
+
     useEffect(() => {
         if (currentMonster.current_hp === 0) {
             const exp = currentMonster.exp + player.experience
             const monsterDrops = getRandom(currentMonster.drops, Math.floor(currentMonster.drops.length/1.5))
             let stats = {...oldPlayer.stats}
             let level = player.level
+            exp >= expHash[level + 1] ? level = parseInt(Object.keys(expHash).reverse().find(level => exp >= expHash[level])) : console.log()
+            const levelDiff = level - oldPlayer.level
             let newDrops = [...drops]
-            Object.keys(stats).forEach(key => key === "cri" ? stats = {...stats, cri: stats.cri + 1} : stats = {...stats, [key]: stats[key] + 5})
+            Object.keys(stats).forEach(key => {
+                key === "cri" ? stats = {...stats, cri: stats.cri + (1 * levelDiff)} : stats = {...stats, [key]: stats[key] + (5 * levelDiff)}
+            })
+            stats = {...stats, current_hp: stats.hp, current_mp: stats.mp}
             monsterDrops.forEach(drop => {
                 if (!newDrops.some(d => d.item === drop.item)) {
                     newDrops.push(drop)
@@ -99,7 +110,6 @@ const TravelledMap = ({ player }) => {
             }
 
             setTimeout(() => {
-                exp >= expHash[level + 1] ? level = parseInt(Object.keys(expHash).reverse().find(level => exp >= expHash[level])) : console.log()
                 dispatch(setCurrentCharacter({
                     ...player, 
                     gold: player.gold + currentMonster.gold, 
@@ -114,6 +124,7 @@ const TravelledMap = ({ player }) => {
             }, 2000)
         }
     }, [currentMonster])
+
     useEffect(() => {
         if (dialogue) dispatch(updateChatBox([...chat, dialogue]))
     }, [dialogue])
@@ -123,20 +134,54 @@ const TravelledMap = ({ player }) => {
             const levelDiff = player.level - oldPlayer.level
             let stats = {...oldPlayer.stats}
             if (levelDiff) {
-                Object.keys(stats).forEach(key => key === "cri" ? stats = {...stats, cri: stats.cri + (1 * levelDiff)} : stats = {...stats, [key]: stats[key] + (5 * levelDiff)})
-                return stats
+                Object.keys(stats).forEach(key => {
+                    key === "cri" ? stats = {...stats, cri: stats.cri + (1 * levelDiff)} : stats = {...stats, [key]: stats[key] + (5 * levelDiff)}
+                })
             }
-            return {...stats, current_hp: player.current_hp, current_mp: player.current_mp}
+            return {...stats, current_hp: player.stats.current_hp, current_mp: player.stats.current_mp}
         }
         let invObj = {}
         drops.forEach(drop => invObj[drop.item] = drop.amount)
+        Object.keys(items).forEach(item => {
+            invObj[item] = (invObj[item] || 0) -items[item]
+        })
+
         let charObj = {
             experience: player.experience - oldPlayer.experience,
             gold: player.gold - oldPlayer.gold,
             level: player.level - oldPlayer.level
         }
+
         dispatch(updateCharAndInventory(player, charObj, invObj, oldChars, newStats()))
         setTimeout(() => dispatch(goBackToTown()), 300)
+    }
+
+    const handleDefeat = () => {
+        const newStats = () => {
+            const levelDiff = player.level - oldPlayer.level
+            let stats = {...oldPlayer.stats}
+            if (levelDiff) {
+                Object.keys(stats).forEach(key => {
+                    key === "cri" ? stats = {...stats, cri: stats.cri + (1 * levelDiff)} : stats = {...stats, [key]: stats[key] + (5 * levelDiff)}
+                })
+            }
+            return {...stats, current_hp: stats.hp, current_mp: stats.mp}
+        }
+
+        let invObj = {}
+        Object.keys(items).forEach(item => {
+            invObj[item] = (invObj[item] || 0) -items[item]
+        })
+
+        let charObj = {
+            experience: player.experience - oldPlayer.experience,
+            gold: -player.gold/2,
+            level: player.level - oldPlayer.level
+        }
+
+        const newChat = [...chat, {Cupid: "My pocket seems a lot lighter. I lost all the items from that trip and a ton of gold."}]
+        dispatch(updateCharAndInventory(player, charObj, invObj, oldChars, newStats()))
+        setTimeout(() => dispatch(goBackToTown(newChat)), 300)
     }
 
     return (
@@ -156,16 +201,16 @@ const TravelledMap = ({ player }) => {
                 <img src={imageHash[action]} alt="player" style={{position: "absolute", width: "100%"}}/>
             </div>
             { inBattle ? <BattleInterface/> : null }
-            {   victory ?
+            {   result ?
                 <motion.div animate={victoryVar} className="victory">
-                    <h2>Victory</h2>
+                    {result === "victory" ? <h2>Victory</h2> : <h2 style={{color: "maroon"}}>Defeat</h2>}
                     <motion.button
                         className="victory-btn"
                         onMouseEnter={() => setHover(true)}
                         onMouseLeave={() => setHover(false)}
                         animate={hover ? "effect" : "none"}
                         variants={victoryButtonVar}
-                        onClick={handleVictory}
+                        onClick={result === "victory" ? handleVictory : handleDefeat}
                     >
                         <motion.p variants={victoryTextVar} animate={hover ? "effect" : "none"}>BACK TO AMAZEN</motion.p>
                         <motion.div className="svg" variants={victorySvgVar} animate={hover ? "effect" : "none"}>

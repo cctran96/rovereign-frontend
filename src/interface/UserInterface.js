@@ -32,7 +32,7 @@ const UserInterface = () => {
             dispatch(toggleSkillsMenu())
         } else if (e.key === "i") {
             dispatch(toggleInventoryMenu())
-        } else if (e.key === "x") {
+        } else if (e.key === "s") {
             dispatch(toggleStatsMenu())
         }
     }, 100)
@@ -66,6 +66,15 @@ const UserInterface = () => {
             return "#1717be"
         }
         return "#01017e"
+    }
+
+    // Display gold
+    const displayedGold = () => {
+        const str = gold.toString()
+        if (str.length > 9) return `${str.slice(0, str.length - 9)}B`
+        if (str.length > 6) return `${str.slice(0, str.length - 6)}M`
+        if (str.length > 4) return `${str.slice(0, str.length - 3)}K`
+        return gold
     }
 
     return (
@@ -110,7 +119,7 @@ const UserInterface = () => {
                             <p>Level: {level}</p>
                         </div>
                         <div className="ui-gold">
-                            <motion.p initial="start" animate="end" variants={chatVar}>{gold}</motion.p>
+                            <motion.p initial="start" animate="end" variants={chatVar}>{displayedGold()}</motion.p>
                             <div className="gold-sprite" style={{backgroundImage: `url(${goldSprite})`}}/>
                         </div>
                     </div>
