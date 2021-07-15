@@ -1395,3 +1395,117 @@ body::-webkit-scrollbar,
     transition: 0.5s;
     cursor: pointer;
 }
+
+.craft {
+    position: absolute;
+    bottom: 200px;
+    left: 0;
+    font-family: Luminari, fantasy;
+    color: whitesmoke;
+    margin-left: 70px;
+    cursor: pointer;
+}
+
+.craft:hover {
+    color: rebeccapurple;
+    transition: 0.5s;
+}
+
+.crafting-menu {
+    font-family: Luminari, fantasy;
+    margin-left: 16%;
+    width: 600px;
+    height: 440px;
+    background: white;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 30px;
+}
+
+.crafting-container {
+    width: 100%;
+    height: 73.7%;
+    display: flex;
+}
+
+.crafting-options {
+    width: 20%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+.crafting-options p:hover {
+    cursor: pointer;
+    transition: 0.5s;
+}
+
+.crafting-options p:first-child:hover {
+    color: #CD634C;
+}
+
+.crafting-options p:nth-child(2):hover {
+    color: silver;
+}
+
+.crafting-options p:last-child:hover {
+    color: gold;
+}
+
+.crafting-table {
+    width: 80%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    flex-direction: column;
+}
+
+.crafting-items {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    width: 90%;
+    margin-bottom: auto;
+    margin-top: 20px;
+}
+
+.craft-materials {
+    width: 100%;
+    height: 75%;
+    display: flex;
+    flex-direction: column;
+}
+
+.ingredient-container {
+    height: 70%;
+    display: flex;
+    justify-content: center;
+}
+
+.ingredient {
+    width: 30%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-right: 10px;
+    margin-left: 10px;
+}
+
+.craft-button {
+    margin-top: auto;
+    height: 30%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.success:hover {
+    color: gold;
+    transition: 0.5s;
+    cursor: pointer;
+}

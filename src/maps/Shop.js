@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react"
 import { useSelector, useDispatch } from "react-redux"
 import { updateChatBox } from "../actions/menuAction"
 import { setCurrentMap } from "../actions/mapActions"
+import CraftingMenu from "../interface/CraftingMenu"
 import { upgradeCharacter, updateCharAndInventory } from "../actions/playerActions"
 import { motion } from "framer-motion"
 import { ImArrowLeft } from "react-icons/im/index.esm"
@@ -30,6 +31,7 @@ const Shop = ({player}) => {
     const [hover, setHover] = useState(false)
     const [selectedMap, setSelectedMap] = useState(null)
     const [isOpen, setIsOpen] = useState(false)
+    const [showCraft, setShowCraft] = useState(false)
     const [hoveredItem, setHoveredItem] = useState(null)
     const [buyOrSell, setBuyOrSell] = useState(null)
 
@@ -159,7 +161,7 @@ const Shop = ({player}) => {
                 className={`shop-container ${isOpen ? "open" : "closed"}`} 
                 style={{display: isOpen ? "block" : "none"}}
             >
-                <motion.div className="shop-menu"animate={isOpen ? "open" : "closed"} variants={menuVar}>
+                <motion.div className="shop-menu" animate={isOpen ? "open" : "closed"} variants={menuVar}>
                     <div className="shop-buttons">
                         {   buyOrSell ? 
                             <motion.div className="back-button" initial="closed" animate="open" variants={closeVar}>
@@ -270,6 +272,8 @@ const Shop = ({player}) => {
                     : null 
                 }
             </div>
+            <p className="craft" onClick={() => setShowCraft(true)}>Craft</p>
+            <CraftingMenu show={showCraft} setShow={setShowCraft} items={items} itemImage={itemImage} formatName={formatName} player={player} oldChars={oldChars}/>
         </motion.div>
     )
 }
