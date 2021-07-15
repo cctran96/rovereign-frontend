@@ -128,11 +128,11 @@ const arrowVar = {
 }
 
 const fakeInv = [
-    {amount: 3, item: "magic_potion"},
-    {amount: 3, item: "range_potion"},
-    {amount: 3, item: "strength_potion"},
+    {amount: 3, item: "health_potion"},
     {amount: 3, item: "mana_potion"},
-    {amount: 3, item: "health_potion"}
+    {amount: 3, item: "strength_potion"},
+    {amount: 3, item: "range_potion"},
+    {amount: 3, item: "magic_potion"},
 ]
 
 const fadeIn = {

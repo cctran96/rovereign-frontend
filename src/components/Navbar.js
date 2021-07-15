@@ -69,7 +69,7 @@ const Navbar = () => {
                     <li><NavLink onClick={resetError} activeStyle={activeStyle} exact to="/play">Play</NavLink></li>
                     <li>
                         {   user ?
-                            <button onClick={handleLogout} href="#">Logout</button> :
+                            <button style={{cursor: "pointer"}} onClick={handleLogout} href="#">Logout</button> :
                             <NavLink onClick={resetError} activeStyle={activeStyle} exact to="/login">Login</NavLink>
                         }
                     </li>
@@ -105,7 +105,7 @@ const Navbar = () => {
                         </motion.li>
                         <motion.li variants={liVar(4)}>
                             {   user ?
-                                <button onClick={handleLogout}>Logout</button> :
+                                <button style={{cursor: "pointer"}} onClick={handleLogout}>Logout</button> :
                                 <NavLink activeStyle={activeStyle} exact to="/login">Login</NavLink>
                             }
                         </motion.li>

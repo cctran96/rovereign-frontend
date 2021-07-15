@@ -2,13 +2,20 @@ import React, { useEffect, useState } from "react"
 import { useSelector, useDispatch } from "react-redux"
 import { updateChatBox } from "../actions/menuAction"
 import { setCurrentMap } from "../actions/mapActions"
+import { upgradeCharacter, updateCharAndInventory } from "../actions/playerActions"
 import { motion } from "framer-motion"
 import { ImArrowLeft } from "react-icons/im/index.esm"
+import { IoMdClose, IoMdArrowRoundBack } from "react-icons/io"
 
 const Shop = ({player}) => {
     const dispatch = useDispatch()
+    const items = useSelector(state => state.details.items)
+    const images = useSelector(state => state.images.items.items)
+    const oldChars = useSelector(state => state.characters.characters)
+    const charDetails = useSelector(state => state.details.characters)
     const chat = useSelector(state => state.menu.chat)
     const sellers = useSelector(state => state.images.imageSrc.sellers)
+    const goldImg = useSelector(state => state.images.items.gold[0])
     const monsters = useSelector(state => {
         let monstersObj = {}
         state.monsters.monsters.forEach(obj => monstersObj[obj.name] = obj)
@@ -22,10 +29,77 @@ const Shop = ({player}) => {
 
     const [hover, setHover] = useState(false)
     const [selectedMap, setSelectedMap] = useState(null)
+    const [isOpen, setIsOpen] = useState(false)
+    const [hoveredItem, setHoveredItem] = useState(null)
+    const [buyOrSell, setBuyOrSell] = useState(null)
 
     const handleMapChange = () => {
         dispatch(updateChatBox([{Notice: `You've entered ${formatName(selectedMap)}`}]))
         dispatch(setCurrentMap(selectedMap, mapObj(monsters)[selectedMap].monsters))
+    }
+
+    const handleCloseShop = e => {
+        if (e.target.className === ("shop-container open")) {
+            setIsOpen(!isOpen)
+            setBuyOrSell(null)
+        }
+    }
+
+    const itemImage = item => {
+        if (!item.name) return
+        const image = images.find(img => img.split(/[/|.]/)[3] === item.name)
+        return image
+    }
+
+    const handleHoverItem = e => {
+        const item = e.target.className.split(" ")[1]
+        setHoveredItem(item)
+    }
+
+    const handleBuyItem = e => {
+        let item = e.target.getAttribute("item")
+        let cost = parseInt(e.target.getAttribute("cost"))
+        if (player.gold < cost) return
+        dispatch(updateCharAndInventory(player, {gold: -cost}, {[item]: 1}, oldChars))
+    }
+
+    const handleSellItem = e => {
+        let item = e.target.getAttribute("item")
+        let cost = parseInt(e.target.getAttribute("cost"))
+        dispatch(updateCharAndInventory(player, {gold: cost}, {[item]: -1}, oldChars))
+    }
+
+    const classArr = () => {
+        const key = Object.keys(classObj).find(key => classObj[key].includes(player.role))
+        return classObj[key]
+    }
+
+    const handleUpgrade = () => {
+        if (player.role === classArr()[0]) {
+            if (player.gold < 25000) {
+                dispatch(updateChatBox([...chat, {Notice: "Upgrading your class requires 25k."}]))
+            } else {
+                let stats = charDetails.find(char => char.role === classArr()[1]).base_stats
+                let diff = player.level - 1
+                Object.keys(stats).forEach(key => {
+                    key === "cri" ? stats = {...stats, cri: stats.cri + (1 * diff)} : stats = {...stats, [key]: stats[key] + (5 * diff)}
+                })
+                stats = {...stats, current_hp: stats.hp, current_mp: stats.mp}
+                dispatch(upgradeCharacter({id: player.id, character: classArr()[1], gold: player.gold - 25000, stats: stats}, oldChars))
+            }
+        } else if (player.role === classArr()[1]) {
+            if (player.gold < 100000) {
+                dispatch(updateChatBox([...chat, {Notice: "Upgrading your class requires 100k."}]))
+            } else {
+                let stats = charDetails.find(char => char.role === classArr()[2]).base_stats
+                let diff = player.level - 1
+                Object.keys(stats).forEach(key => {
+                    key === "cri" ? stats = {...stats, cri: stats.cri + (1 * diff)} : stats = {...stats, [key]: stats[key] + (5 * diff)}
+                })
+                stats = {...stats, current_hp: stats.hp, current_mp: stats.mp}
+                dispatch(upgradeCharacter({id: player.id, character: classArr()[2], gold: player.gold - 100000, stats: stats}, oldChars))
+            }
+        }
     }
 
     return (
@@ -38,20 +112,19 @@ const Shop = ({player}) => {
         >
             <div className="seller" style={{backgroundImage: `url(${sellers[0]})`}}/>
             <motion.div 
+                className="shop" 
+                onClick={() => setIsOpen(true)}
+                animate={isOpen ? "open" : "closed"}
+                variants={openVar}
+            >
+                <p>Shop</p>
+            </motion.div>
+            <motion.div 
                 className="map-dropdown"
                 onMouseEnter={() => {setHover(true);setSelectedMap(null)}}
                 onMouseLeave={() => setHover(false)}
             >
-                <div 
-                    style={{
-                        fontFamily: "Luminari, fantasy", 
-                        backgroundColor: hover ? "rgba(0, 0, 0, 0.4)" : null,
-                        height: "50px",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center"
-                    }}
-                >
+                <div className="travel" style={{backgroundColor: hover ? "rgba(0, 0, 0, 0.4)" : null}}>
                     <p>Travel</p>
                 </div>
                 {   hover ?
@@ -81,11 +154,133 @@ const Shop = ({player}) => {
                         <ImArrowLeft size={40}/>
                 </div> : null
             }
+            <div 
+                onClick={handleCloseShop} 
+                className={`shop-container ${isOpen ? "open" : "closed"}`} 
+                style={{display: isOpen ? "block" : "none"}}
+            >
+                <motion.div className="shop-menu"animate={isOpen ? "open" : "closed"} variants={menuVar}>
+                    <div className="shop-buttons">
+                        {   buyOrSell ? 
+                            <motion.div className="back-button" initial="closed" animate="open" variants={closeVar}>
+                                <IoMdArrowRoundBack onClick={() => setBuyOrSell(null)} size={35}/>
+                            </motion.div> : null
+                        }
+                        <motion.div className="close-button" variants={closeVar}>
+                            <IoMdClose onClick={() => setIsOpen(false)} size={35}/>
+                        </motion.div>
+                    </div>
+                    {   !buyOrSell ?
+                        <div className="shop-options">
+                            <motion.p onClick={() => setBuyOrSell("buy")}>Buy</motion.p>
+                            <motion.p onClick={() => setBuyOrSell("sell")}>Sell</motion.p>
+                        </div> : null
+                    }
+                    <motion.div className="shop-items" animate={isOpen ? "open" : "closed"}>
+                        {   buyOrSell === "buy" ? 
+                            items.map((item, idx) => (
+                                <motion.div 
+                                    key={idx} 
+                                    className={`shop-item ${item.name}`} 
+                                    onMouseEnter={handleHoverItem} 
+                                    onMouseLeave={() => setHoveredItem(null)}
+                                    initial="start"
+                                    animate="end"
+                                    variants={itemVar(idx)}
+                                >
+                                    <p style={{marginLeft: "5px", display: hoveredItem === item.name ? "none" : "block"}}>
+                                        {formatName(item.name)}
+                                    </p>
+                                    <div className={`shop-gold ${item.name}`}>
+                                        <p>{item.cost}</p>
+                                        <div className="gold-img" style={{backgroundImage: `url(${goldImg})`}}/>
+                                    </div>
+                                    <div 
+                                        className="buy-button"
+                                        item={item.name}
+                                        cost={item.cost}
+                                        onClick={handleBuyItem}
+                                        style={{
+                                            display: hoveredItem === item.name ? "flex" : "none",
+                                            color: item.cost <= player.gold ? "green" : "red",
+                                            cursor: item.cost <= player.gold ? "pointer" : "default"
+                                        }}
+                                    >
+                                        {item.cost <= player.gold ? "BUY" : "NOT ENOUGH GOLD"}
+                                    </div>
+                                </motion.div>
+                            )) : null
+                        }
+                        {   buyOrSell === "sell" ?
+                            player.inventory.filter(i => i.amount > 0).map((item,idx) => (
+                                <motion.div 
+                                    key={idx} 
+                                    className={`shop-item ${item.item}`} 
+                                    onMouseEnter={handleHoverItem} 
+                                    onMouseLeave={() => setHoveredItem(null)}
+                                    initial="start"
+                                    animate="end"
+                                    variants={itemVar(idx)}
+                                >
+                                    <p style={{marginLeft: "5px", display: hoveredItem === item.item ? "none" : "block"}}>
+                                        {formatName(item.item)}
+                                    </p>
+                                    <div className={`shop-gold ${item.item}`}>
+                                        <p>{items.find(i => i.name === item.item).cost/2}</p>
+                                        <div className="gold-img" style={{backgroundImage: `url(${goldImg})`}}/>
+                                    </div>
+                                    <div 
+                                        className="sell-button"
+                                        item={item.item}
+                                        cost={items.find(i => i.name === item.item).cost/2}
+                                        onClick={handleSellItem}
+                                        style={{
+                                            display: hoveredItem === item.item ? "flex" : "none",
+                                            color: "gold",
+                                            cursor: "pointer"
+                                        }}
+                                    >
+                                        SELL
+                                    </div>
+                                </motion.div> 
+                            )): null
+                        }
+                    </motion.div>
+                    {   hoveredItem ?
+                        <div className="shop-tool-tip">
+                            <p>{formatName(hoveredItem)}</p>
+                            <div className="item-icon" style={{backgroundImage: `url(${itemImage(items.find(i => i.name === hoveredItem))})`}}/>
+                            <p style={{margin: "5px"}}>{items.find(i => i.name === hoveredItem).description}</p>
+                            <p style={{marginTop: "auto"}}>
+                                You have: <b>{player.inventory.find(i => i.item === hoveredItem) ? player.inventory.find(i => i.item === hoveredItem).amount : 0}</b>
+                            </p>
+                        </div> : null
+                    }
+                </motion.div>
+            </div>
+            <div className="upgrade">
+                { 
+                    player.level > 9 && player.role === classArr()[0] ? 
+                    <p onClick={handleUpgrade}>Upgrade to {formatName(classArr()[1])}</p> 
+                    : null 
+                }
+                { 
+                    player.level > 19 && player.role === classArr()[1] ? 
+                    <p onClick={handleUpgrade}>Upgrade to {formatName(classArr()[2])}</p> 
+                    : null 
+                }
+            </div>
         </motion.div>
     )
 }
 
 export default Shop
+
+const classObj = {
+    knight: ["spearman", "crusader", "hero"],
+    archer: ["hunter", "crossbowman", "robinhood"],
+    wizard: ["magician", "sorcerer", "elysianist"]
+}
 
 const fadeIn = {
     start: {opacity: 0},
@@ -96,6 +291,36 @@ const mapNameVar = idx => {
     return {
         start: {opacity: 0, y: -100},
         end: {opacity: 1, y: 0, transition: {duration: 0.05, delay: 0.075 * idx, ease: "easeInOut"}}
+    }
+}
+
+const openVar = {
+    open: {y: -100, opacity: 0},
+    closed: {opacity: 1, y: 0, transition: {duration: 0.7}}
+}
+
+const closeVar = {
+    open: {opacity: 1, y: 0, transition: {duration: 0.7, delay: 0.5}},
+    closed: {opacity: 0, y: -100}
+}
+
+const menuVar = {
+    open: {
+        opacity: 1, 
+        x: 0, 
+        transition: {
+            type: "spring",
+            bounce: 0
+        }
+    },
+    closed: {
+        opacity: 0, x: 1000}
+}
+
+const itemVar = idx => {
+    return {
+        start: {opacity: 0},
+        end: {opacity: 1, transition: {duration: 0.2, delay: 0.1 * idx}}
     }
 }
 

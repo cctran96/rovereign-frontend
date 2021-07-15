@@ -9,13 +9,14 @@ const InventoryMenu = ({player}) => {
     const inBattle = useSelector(state => state.battle.inBattle)
     const display = useSelector(state => state.battle.display)
     const allItems= useSelector(state => state.details.items)
+    const formatName = name => name.split("_").map(w => w[0].toUpperCase() + w.slice(1)).join(" ")
 
     const [hoveredItem, setHoveredItem] = useState(null)
 
     const inventory = () => {
         let placeholder = [...player.inventory]
         placeholder = placeholder.filter(i => i.amount > 0)
-        while (placeholder.length < 28) {
+        while (placeholder.length < 30) {
             placeholder.push({})
         }
         return placeholder
@@ -61,6 +62,7 @@ const InventoryMenu = ({player}) => {
                         <p style={{color: "white", transform: "translateY(-15px)"}}>{item.amount}</p>
                         {   found ?
                             <div className="tool-tip" style={{display: hoveredItem === item.item ? "block" : "none"}}>
+                                <p>{formatName(item.item)}</p>
                                 <div className="item-icon" style={{marginTop: "10px", marginLeft: "75px", backgroundImage: `url(${itemImage(item)})`}}/>
                                 <p>{found.description}</p>
                             </div> : null

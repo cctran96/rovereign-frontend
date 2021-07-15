@@ -9,7 +9,12 @@ body {
     background: linear-gradient(to right, #45489a, #4c428e, #513c83, #533677, #54316c);
 }
 
-body::-webkit-scrollbar {
+body::-webkit-scrollbar,
+.drops::-webkit-scrollbar,
+.chatbox::-webkit-scrollbar,
+.shop-items::-webkit-scrollbar,
+.map-dropdown::-webkit-scrollbar,
+.wiki-container::-webkit-scrollbar {
     width: 0;
 }
 
@@ -78,7 +83,7 @@ body::-webkit-scrollbar {
     margin-right: 20px;
 }
 
-.open-button:hover {
+.open-button:hover, .shop:hover {
     color:green;
     transition: 0.5s;
 }
@@ -89,7 +94,6 @@ body::-webkit-scrollbar {
     width: 100%;
     height: 100%;
     overflow: hidden;
-    background: rgb(0,0,0);
     background: rgba(0,0,0,0.4);
 }
 
@@ -124,7 +128,7 @@ body::-webkit-scrollbar {
     margin-left: 80px;
 }
 
-.close-button {
+.close-button, .back-button {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -700,10 +704,6 @@ body::-webkit-scrollbar {
     overflow-y: scroll;
 }
 
-.chatbox::-webkit-scrollbar {
-    width: 0;
-}
-
 .chatbox p {
     margin-left: 5px;
     margin-top: auto;
@@ -835,6 +835,7 @@ body::-webkit-scrollbar {
 }
 
 .skills-menu, .inventory-menu, .stats-menu {
+    font-family: Luminari, fantasy;
     position: absolute;
     top: 0;
     left: 0;
@@ -859,8 +860,8 @@ body::-webkit-scrollbar {
 }
 
 .inventory-menu, .stats-menu {
-    height: 200px;
-    width: 350px;
+    height: 250px;
+    width: 300px;
 }
 
 .stats-menu {
@@ -971,7 +972,7 @@ body::-webkit-scrollbar {
     width: 250px;
     border: 1px solid black;
     top: 42%;
-    left: 5px;
+    left: 35%;
     display: flex;
     align-items: center;
     background-color: rgba(0, 0, 0, 0.4);
@@ -1004,7 +1005,7 @@ body::-webkit-scrollbar {
 .default-attack {
     position: absolute;
     top: 50%;
-    left: 9%;
+    left: 45%;
     background-color: rgba(255, 255, 255, 0.4);
     cursor: pointer;
     border: none;
@@ -1086,10 +1087,6 @@ body::-webkit-scrollbar {
     overflow-y: scroll;
     display: flex;
     justify-content: center;
-}
-
-.wiki-container::-webkit-scrollbar, .map-dropdown::-webkit-scrollbar, .drops::-webkit-scrollbar {
-    width: 0;
 }
 
 .wiki-table td, .wiki-table th{
@@ -1177,7 +1174,7 @@ body::-webkit-scrollbar {
 .drops-container {
     position: absolute;
     top: 0;
-    left: 369px;
+    left: 344px;
     width: 200px;
     background-color: rgba(0, 0, 0, 0.3);
 }
@@ -1198,13 +1195,14 @@ body::-webkit-scrollbar {
 }
 
 .tool-tip {
+    font-size: 15px;
     border: 2px solid black;
-    height: 200px;
+    height: 250px;
     width: 200px;
     z-index: 10;
     position: absolute;
     right: -205px;
-    bottom: -185px;
+    bottom: -230px;
     background-color: rgba(136, 183, 213, 0.7);
     display: flex;
     flex-direction: column;
@@ -1235,4 +1233,165 @@ body::-webkit-scrollbar {
 	border-right-color: #000000;
 	border-width: 8px;
 	margin-top: -8px;
+}
+
+.travel {
+    font-family: Luminari, fantasy;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.shop {
+    position: absolute;
+    font-family: Luminari, fantasy;
+    height: 50px;
+    right: 0;
+    top: 0;
+    width: 180px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    color: whitesmoke;
+}
+
+.shop-container {
+    left: 0;
+    top: 0;
+    position: absolute;
+    width: 100%;
+    height: 500px;
+    background: rgba(0, 0, 0, 0.2);
+    z-index: 5;
+}
+
+.shop-menu {
+    display: flex;
+    flex-direction: column;
+    float: right;
+    width: 335px;
+    height: 99.7%;
+    font-family: Luminari, fantasy;
+    font-size: 18px;
+    background: rgba(168, 160, 178, 0.9);
+    cursor: default;
+}
+
+.shop-items {
+    width: 100%;
+    height: 100%;
+    overflow-y: scroll;
+    list-style: none;
+}
+
+.shop-item {
+    width: 100%;
+    height: 50px;
+    margin-left: 0;
+    margin-right: 20px;
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+.shop-gold {
+    margin-left: auto;
+    margin-right: 5px;
+    display: flex;
+    align-items: center;
+}
+
+.gold-img {
+    height: 30px;
+    width: 30px;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+.shop-tool-tip {
+	background: rgba(168, 160, 178, 0.9);
+    z-index: 5;
+    position: absolute;
+    right: 335px;
+    top: 0;
+    height: 230px;
+    width: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-items: center;
+    align-items: center;
+    text-align: center;
+    font-size: 15px;
+}
+
+.buy-button, .sell-button {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-left: 5px;
+}
+
+.upgrade {
+    position: absolute;
+    bottom: 200px;
+    right: 0;
+    font-family: Luminari, fantasy;
+    width: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    color: whitesmoke;
+}
+
+.upgrade p:hover {
+    color: gold;
+    transition: 0.5s;
+}
+
+.shop-buttons {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    margin-right: 17px;
+    margin-top: 8px;
+}
+
+.shop-buttons .close-button, .shop-buttons .back-button {
+    margin-top: 0;
+}
+
+.back-button {
+    margin-left: 0;
+}
+
+.back-button:hover {
+    color: blue;
+    transition: 0.5s;
+}
+
+.shop-options {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 80px;
+    font-size: 40px;
+}
+
+.shop-options p:hover {
+    color: whitesmoke;
+    transition: 0.5s;
+    cursor: pointer;
 }

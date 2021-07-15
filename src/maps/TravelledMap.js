@@ -175,7 +175,7 @@ const TravelledMap = ({ player }) => {
 
         let charObj = {
             experience: player.experience - oldPlayer.experience,
-            gold: -player.gold/2,
+            gold: -player.gold/3,
             level: player.level - oldPlayer.level
         }
 

@@ -106,7 +106,7 @@ const UserInterface = () => {
                                 <div className="exp">
                                     <p>{currentExp}/{expToLevel}</p>
                                 </div>
-                                <div className="ui-exp" style={{backgroundColor: "yellow", width: `${(currentExp/expToLevel)*100}%`}}/>
+                                <div className="ui-exp" style={{backgroundColor: "goldenrod", width: `${(currentExp/expToLevel)*100}%`}}/>
                             </div>
                         </div>
                     </div>
