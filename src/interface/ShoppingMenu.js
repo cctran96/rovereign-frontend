@@ -123,7 +123,7 @@ const ShoppingMenu = ({player, oldChars, formatName, items, itemImage, isOpen, s
                                         cursor: "pointer"
                                     }}
                                 >
-                                    SELL
+                                    <p>SELL</p>
                                 </div>
                             </motion.div> 
                         )): null
