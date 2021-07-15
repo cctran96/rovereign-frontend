@@ -2,11 +2,11 @@ import React, { useEffect, useState } from "react"
 import { useSelector, useDispatch } from "react-redux"
 import { updateChatBox } from "../actions/menuAction"
 import { setCurrentMap } from "../actions/mapActions"
-import CraftingMenu from "../interface/CraftingMenu"
-import { upgradeCharacter, updateCharAndInventory } from "../actions/playerActions"
+import { upgradeCharacter } from "../actions/playerActions"
 import { motion } from "framer-motion"
 import { ImArrowLeft } from "react-icons/im/index.esm"
-import { IoMdClose, IoMdArrowRoundBack } from "react-icons/io"
+import CraftingMenu from "../interface/CraftingMenu"
+import ShoppingMenu from "../interface/ShoppingMenu"
 
 const Shop = ({player}) => {
     const dispatch = useDispatch()
@@ -16,7 +16,6 @@ const Shop = ({player}) => {
     const charDetails = useSelector(state => state.details.characters)
     const chat = useSelector(state => state.menu.chat)
     const sellers = useSelector(state => state.images.imageSrc.sellers)
-    const goldImg = useSelector(state => state.images.items.gold[0])
     const monsters = useSelector(state => {
         let monstersObj = {}
         state.monsters.monsters.forEach(obj => monstersObj[obj.name] = obj)
@@ -32,43 +31,16 @@ const Shop = ({player}) => {
     const [selectedMap, setSelectedMap] = useState(null)
     const [isOpen, setIsOpen] = useState(false)
     const [showCraft, setShowCraft] = useState(false)
-    const [hoveredItem, setHoveredItem] = useState(null)
-    const [buyOrSell, setBuyOrSell] = useState(null)
 
     const handleMapChange = () => {
         dispatch(updateChatBox([{Notice: `You've entered ${formatName(selectedMap)}`}]))
         dispatch(setCurrentMap(selectedMap, mapObj(monsters)[selectedMap].monsters))
     }
 
-    const handleCloseShop = e => {
-        if (e.target.className === ("shop-container open")) {
-            setIsOpen(!isOpen)
-            setBuyOrSell(null)
-        }
-    }
-
     const itemImage = item => {
         if (!item.name) return
         const image = images.find(img => img.split(/[/|.]/)[3] === item.name)
         return image
-    }
-
-    const handleHoverItem = e => {
-        const item = e.target.className.split(" ")[1]
-        setHoveredItem(item)
-    }
-
-    const handleBuyItem = e => {
-        let item = e.target.getAttribute("item")
-        let cost = parseInt(e.target.getAttribute("cost"))
-        if (player.gold < cost) return
-        dispatch(updateCharAndInventory(player, {gold: -cost}, {[item]: 1}, oldChars))
-    }
-
-    const handleSellItem = e => {
-        let item = e.target.getAttribute("item")
-        let cost = parseInt(e.target.getAttribute("cost"))
-        dispatch(updateCharAndInventory(player, {gold: cost}, {[item]: -1}, oldChars))
     }
 
     const classArr = () => {
@@ -156,110 +128,24 @@ const Shop = ({player}) => {
                         <ImArrowLeft size={40}/>
                 </div> : null
             }
-            <div 
-                onClick={handleCloseShop} 
-                className={`shop-container ${isOpen ? "open" : "closed"}`} 
-                style={{display: isOpen ? "block" : "none"}}
-            >
-                <motion.div className="shop-menu" animate={isOpen ? "open" : "closed"} variants={menuVar}>
-                    <div className="shop-buttons">
-                        {   buyOrSell ? 
-                            <motion.div className="back-button" initial="closed" animate="open" variants={closeVar}>
-                                <IoMdArrowRoundBack onClick={() => setBuyOrSell(null)} size={35}/>
-                            </motion.div> : null
-                        }
-                        <motion.div className="close-button" variants={closeVar}>
-                            <IoMdClose onClick={() => setIsOpen(false)} size={35}/>
-                        </motion.div>
-                    </div>
-                    {   !buyOrSell ?
-                        <div className="shop-options">
-                            <motion.p onClick={() => setBuyOrSell("buy")}>Buy</motion.p>
-                            <motion.p onClick={() => setBuyOrSell("sell")}>Sell</motion.p>
-                        </div> : null
-                    }
-                    <motion.div className="shop-items" animate={isOpen ? "open" : "closed"}>
-                        {   buyOrSell === "buy" ? 
-                            items.map((item, idx) => (
-                                <motion.div 
-                                    key={idx} 
-                                    className={`shop-item ${item.name}`} 
-                                    onMouseEnter={handleHoverItem} 
-                                    onMouseLeave={() => setHoveredItem(null)}
-                                    initial="start"
-                                    animate="end"
-                                    variants={itemVar(idx)}
-                                >
-                                    <p style={{marginLeft: "5px", display: hoveredItem === item.name ? "none" : "block"}}>
-                                        {formatName(item.name)}
-                                    </p>
-                                    <div className={`shop-gold ${item.name}`}>
-                                        <p>{item.cost}</p>
-                                        <div className="gold-img" style={{backgroundImage: `url(${goldImg})`}}/>
-                                    </div>
-                                    <div 
-                                        className="buy-button"
-                                        item={item.name}
-                                        cost={item.cost}
-                                        onClick={handleBuyItem}
-                                        style={{
-                                            display: hoveredItem === item.name ? "flex" : "none",
-                                            color: item.cost <= player.gold ? "green" : "red",
-                                            cursor: item.cost <= player.gold ? "pointer" : "default"
-                                        }}
-                                    >
-                                        {item.cost <= player.gold ? "BUY" : "NOT ENOUGH GOLD"}
-                                    </div>
-                                </motion.div>
-                            )) : null
-                        }
-                        {   buyOrSell === "sell" ?
-                            player.inventory.filter(i => i.amount > 0).map((item,idx) => (
-                                <motion.div 
-                                    key={idx} 
-                                    className={`shop-item ${item.item}`} 
-                                    onMouseEnter={handleHoverItem} 
-                                    onMouseLeave={() => setHoveredItem(null)}
-                                    initial="start"
-                                    animate="end"
-                                    variants={itemVar(idx)}
-                                >
-                                    <p style={{marginLeft: "5px", display: hoveredItem === item.item ? "none" : "block"}}>
-                                        {formatName(item.item)}
-                                    </p>
-                                    <div className={`shop-gold ${item.item}`}>
-                                        <p>{items.find(i => i.name === item.item).cost/2}</p>
-                                        <div className="gold-img" style={{backgroundImage: `url(${goldImg})`}}/>
-                                    </div>
-                                    <div 
-                                        className="sell-button"
-                                        item={item.item}
-                                        cost={items.find(i => i.name === item.item).cost/2}
-                                        onClick={handleSellItem}
-                                        style={{
-                                            display: hoveredItem === item.item ? "flex" : "none",
-                                            color: "gold",
-                                            cursor: "pointer"
-                                        }}
-                                    >
-                                        SELL
-                                    </div>
-                                </motion.div> 
-                            )): null
-                        }
-                    </motion.div>
-                    {   hoveredItem ?
-                        <div className="shop-tool-tip">
-                            <p>{formatName(hoveredItem)}</p>
-                            <div className="item-icon" style={{backgroundImage: `url(${itemImage(items.find(i => i.name === hoveredItem))})`}}/>
-                            <p style={{margin: "5px"}}>{items.find(i => i.name === hoveredItem).description}</p>
-                            <p style={{marginTop: "auto"}}>
-                                You have: <b>{player.inventory.find(i => i.item === hoveredItem) ? player.inventory.find(i => i.item === hoveredItem).amount : 0}</b>
-                            </p>
-                        </div> : null
-                    }
-                </motion.div>
-            </div>
+            <ShoppingMenu
+                formatName={formatName}
+                oldChars={oldChars}
+                player={player}
+                items={items}
+                itemImage={itemImage}
+                isOpen={isOpen}
+                setIsOpen={setIsOpen}
+            />
+            <CraftingMenu 
+                show={showCraft} 
+                setShow={setShowCraft} 
+                items={items} 
+                itemImage={itemImage} 
+                formatName={formatName} 
+                player={player} 
+                oldChars={oldChars}
+            />
             <div className="upgrade">
                 { 
                     player.level > 9 && player.role === classArr()[0] ? 
@@ -273,7 +159,6 @@ const Shop = ({player}) => {
                 }
             </div>
             <p className="craft" onClick={() => setShowCraft(true)}>Craft</p>
-            <CraftingMenu show={showCraft} setShow={setShowCraft} items={items} itemImage={itemImage} formatName={formatName} player={player} oldChars={oldChars}/>
         </motion.div>
     )
 }
@@ -301,31 +186,6 @@ const mapNameVar = idx => {
 const openVar = {
     open: {y: -100, opacity: 0},
     closed: {opacity: 1, y: 0, transition: {duration: 0.7}}
-}
-
-const closeVar = {
-    open: {opacity: 1, y: 0, transition: {duration: 0.7, delay: 0.5}},
-    closed: {opacity: 0, y: -100}
-}
-
-const menuVar = {
-    open: {
-        opacity: 1, 
-        x: 0, 
-        transition: {
-            type: "spring",
-            bounce: 0
-        }
-    },
-    closed: {
-        opacity: 0, x: 1000}
-}
-
-const itemVar = idx => {
-    return {
-        start: {opacity: 0},
-        end: {opacity: 1, transition: {duration: 0.2, delay: 0.1 * idx}}
-    }
 }
 
 // Creates monster object to send to store
