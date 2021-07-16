@@ -6,9 +6,9 @@ import { GrReturn, GrCheckmark } from "react-icons/gr/index.esm"
 
 const CreateCharacter = ({showCreation, setShowCreation, characters}) => {
     // State for current selected sprite, stats, and class
-    const [sprite, setSprite] = useState(null)
-    const [stats, setStats] = useState(null)
-    const [role, setRole] = useState(null)
+    const [sprite, setSprite] = useState("/static/media/magician_idle.e6ec80f0.png")
+    const [stats, setStats] = useState({hp: 50, mp: 50, str: 0, dex: 0, int: 50, cri: 1, spd: 25, def: 25})
+    const [role, setRole] = useState("magician")
 
     // State for character name
     const [name, setName] = useState("")
@@ -35,7 +35,9 @@ const CreateCharacter = ({showCreation, setShowCreation, characters}) => {
     // Closes the creation modal
     const closeCreationWindow = () => {
         setShowCreation(false)
-        setSprite(null)
+        setSprite("/static/media/magician_idle.e6ec80f0.png")
+        setStats({hp: 50, mp: 50, str: 0, dex: 0, int: 50, cri: 1, spd: 25, def: 25})
+        setRole("magician")
         setName("")
     }
 

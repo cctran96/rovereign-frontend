@@ -40,7 +40,7 @@ export default Home
 
 const array = [
     "Choose from 3 classes.",
-    "Go on your journey.",
+    "Explore different maps.",
     "Encounter tough monsters.",
     "Level up and collect items.",
     "Upgrade your character.",

@@ -64,6 +64,7 @@ const Login = (props) => {
                                 name="username" 
                                 placeholder="Username" 
                                 value={signupForm.username} 
+                                autoComplete="off"
                                 required
                             />
                         </div>
@@ -112,7 +113,8 @@ const Login = (props) => {
                                 onChange={handleLoginChange}
                                 name="username" 
                                 placeholder="Username" 
-                                value={loginForm.username} 
+                                value={loginForm.username}
+                                autoComplete="off"
                                 required
                             />
                         </div>
@@ -131,7 +133,7 @@ const Login = (props) => {
                         <button type="submit">SIGN IN</button>
                         {   errorList ?
                             <motion.div className="error-container" variants={errorVar} initial="start" animate="end">
-                                {errorList.map(error => <p>{error}</p>)}
+                                {errorList.map((error, idx) => <p key={idx}>{error}</p>)}
                             </motion.div> : null
                         }
                     </form>

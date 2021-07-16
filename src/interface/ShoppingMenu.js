@@ -34,6 +34,7 @@ const ShoppingMenu = ({player, oldChars, formatName, items, itemImage, isOpen, s
         let item = e.target.getAttribute("item")
         let cost = parseInt(e.target.getAttribute("cost"))
         dispatch(updateCharAndInventory(player, {gold: cost}, {[item]: -1}, oldChars))
+
     }
 
     return (
@@ -123,7 +124,7 @@ const ShoppingMenu = ({player, oldChars, formatName, items, itemImage, isOpen, s
                                         cursor: "pointer"
                                     }}
                                 >
-                                    <p>SELL</p>
+                                    SELL
                                 </div>
                             </motion.div> 
                         )): null

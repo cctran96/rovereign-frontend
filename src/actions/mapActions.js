@@ -38,6 +38,7 @@ export const goBackToTown = chat => {
     return dispatch => {
         dispatch({ type: "RESET_MAP" })
         dispatch({ type: "MONSTER_STANCE", stance: "idle" })
+        dispatch({ type: "PLAYER_STANCE", stance: "idle" })
         if (chat) dispatch({ type: "CHAT", chat })
     }
 }

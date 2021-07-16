@@ -103,7 +103,7 @@ const BattleInterface = () => {
         }
     }
 
-    // Default attack
+    // Monster attack
     const monsterAttack = (playerObj, callback) => {
         const damage = calculateMonsterDamage()
         const playDiff = playerObj ? playerObj.stats.current_hp - damage : stats.current_hp - damage
@@ -129,6 +129,7 @@ const BattleInterface = () => {
         }, monFrames.attack * 100)
     }
 
+    // Default attack
     const playerAttack = callback => {
         const damage = calculatePlayerDamage()
         const monDiff = monster.current_hp - damage
@@ -155,6 +156,7 @@ const BattleInterface = () => {
         }, playerFrames.attack * 100)
     }
 
+    // Skill attack
     const playerSkillAttack = (skill, playerObj, callback) => {
         const mp = skill.effect.mp
         const damage = calculatePlayerDamage(skill.effect.attack.damage)
@@ -186,6 +188,12 @@ const BattleInterface = () => {
         }, playerFrames.attack * 100)
     }
 
+    // Skill buff
+    const playerSkillBuff = (skill, playerObi, callback) => {
+
+    }
+
+    // Using item
     const playerUseItem = (item, callback) => {
         dispatch(changeDisplay(true))
         dispatch(setUseItem(item))
@@ -241,6 +249,8 @@ const BattleInterface = () => {
             } else {
                 monsterAttack(null, (playerObj) => playerSkillAttack(skill, playerObj))
             }
+        } else if (skill.effect.buff) {
+            return
         }
     }
 
@@ -275,7 +285,7 @@ const BattleInterface = () => {
     return (
         inBattle ? 
         <div className="battle-ui">
-            <motion.h1 animate={ambushVar}>AMBUSH!</motion.h1>
+            <motion.h1 style={{fontFamily: "URW Chancery L, cursive"}} animate={ambushVar}>AMBUSH!</motion.h1>
             <motion.div className="monster-info" animate={monsterVar}>
                 <div className="monster-name">
                     <p>{formattedMonName}</p>

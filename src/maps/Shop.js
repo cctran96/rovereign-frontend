@@ -50,8 +50,8 @@ const Shop = ({player}) => {
 
     const handleUpgrade = () => {
         if (player.role === classArr()[0]) {
-            if (player.gold < 25000) {
-                dispatch(updateChatBox([...chat, {Notice: "Upgrading your class requires 25k."}]))
+            if (player.gold < 10000) {
+                dispatch(updateChatBox([...chat, {Notice: "Upgrading your class requires 10k."}]))
             } else {
                 let stats = charDetails.find(char => char.role === classArr()[1]).base_stats
                 let diff = player.level - 1
@@ -59,11 +59,11 @@ const Shop = ({player}) => {
                     key === "cri" ? stats = {...stats, cri: stats.cri + (1 * diff)} : stats = {...stats, [key]: stats[key] + (5 * diff)}
                 })
                 stats = {...stats, current_hp: stats.hp, current_mp: stats.mp}
-                dispatch(upgradeCharacter({id: player.id, character: classArr()[1], gold: player.gold - 25000, stats: stats}, oldChars))
+                dispatch(upgradeCharacter({id: player.id, character: classArr()[1], gold: player.gold - 10000, stats: stats}, oldChars))
             }
         } else if (player.role === classArr()[1]) {
-            if (player.gold < 100000) {
-                dispatch(updateChatBox([...chat, {Notice: "Upgrading your class requires 100k."}]))
+            if (player.gold < 50000) {
+                dispatch(updateChatBox([...chat, {Notice: "Upgrading your class requires 50k."}]))
             } else {
                 let stats = charDetails.find(char => char.role === classArr()[2]).base_stats
                 let diff = player.level - 1
@@ -71,7 +71,7 @@ const Shop = ({player}) => {
                     key === "cri" ? stats = {...stats, cri: stats.cri + (1 * diff)} : stats = {...stats, [key]: stats[key] + (5 * diff)}
                 })
                 stats = {...stats, current_hp: stats.hp, current_mp: stats.mp}
-                dispatch(upgradeCharacter({id: player.id, character: classArr()[2], gold: player.gold - 100000, stats: stats}, oldChars))
+                dispatch(upgradeCharacter({id: player.id, character: classArr()[2], gold: player.gold - 50000, stats: stats}, oldChars))
             }
         }
     }

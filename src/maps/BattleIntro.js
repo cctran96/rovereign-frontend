@@ -148,11 +148,13 @@ const BattleIntro = ({player}) => {
                         animate="end"
                         style={{
                             position: "absolute",
-                            top: "170px",
-                            right: 0,
-                            height: "200px",
+                            top: 0,
+                            right: "293px",
+                            height: "250px",
+                            width: "300px",
                             textAlign: "center",
                             color: "yellow",
+                            fontSize: "15px"
                         }}
                     >
                         {tips.map((tip, idx) => <motion.p variants={tipsVar(idx)} style={{margin: 5}} key={idx}>{tip}</motion.p>)}
@@ -205,16 +207,15 @@ const dir1Var = {
 
 const tips = [
     "BATTLE TIPS",
-    "Use your default attack, an item, or a skill.", 
-    'Press "I" to pull up your inventory',
-    'Press "K" to pull up your skills',
-    "For each move you do, the enemy will attack!",
-    "You will always go first when using an item.",
-    "Who attacks first is dependent on the speed stat.",
-    "Killing a monster grants you exp and item(s)."
+    "Use a default attack, an item, or a skill.", 
+    "This is a turn based battle system.",
+    "You will go first when using an item.",
+    "Who attacks first is dependent on speed.",
+    "Killing a monster grants you experience.",
+    "Monsters drop item(s) on death."
 ]
 
-const tipsVar = idx => ({start: {x: 1000, opacity: 0}, end: {x: 0, opacity: 1, transition: {type: "spring", bounce: 0, delay: 3 + idx * 0.3}}})
+const tipsVar = idx => ({start: {opacity: 0}, end: {opacity: 1, transition: {type: "spring", bounce: 0, delay: 3 + idx * 0.3, duration: 0.3}}})
 
 const victoryVar = {
     y: 500,

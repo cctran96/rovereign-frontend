@@ -6,7 +6,7 @@ import { useDispatch } from "react-redux"
 
 const CraftingMenu = ({show, setShow, items, itemImage, formatName, player, oldChars}) => {
     const dispatch = useDispatch()
-    const [tier, setTier] = useState(null)
+    const [tier, setTier] = useState(1)
     const [mats, setMats] = useState(null)
     const [selectedItem, setSelectedItem] = useState(null)
 
@@ -17,7 +17,7 @@ const CraftingMenu = ({show, setShow, items, itemImage, formatName, player, oldC
 
     const closeWindow = () => {
         setShow(false)
-        setTier(null)
+        setTier(1)
         setMats(null)
         setSelectedItem(null)
     }

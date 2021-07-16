@@ -75,15 +75,15 @@ const TravelledMap = ({ player }) => {
     useKeyDown(e => !result ? (!inBattle ? switchAction(e) : null) : dispatch(changePlayerStance(("idle"))))
 
     useEffect(() => {
-        if (monsters.every(monster => monster.current_hp === 0)) dispatch(setResult("victory"))
+        if (monsters.every(monster => monster.current_hp <= 0)) dispatch(setResult("victory"))
     }, [monsters, dispatch])
 
     useEffect(() => {
-        if (player.stats.current_hp === 0) dispatch(setResult("defeat"))
+        if (player.stats.current_hp <= 0) dispatch(setResult("defeat"))
     },[player, dispatch])
 
     useEffect(() => {
-        if (currentMonster.current_hp === 0) {
+        if (currentMonster.current_hp <= 0) {
             const exp = currentMonster.exp + player.experience
             const monsterDrops = getRandom(currentMonster.drops, Math.floor(currentMonster.drops.length/1.5))
             let stats = {...oldPlayer.stats}
