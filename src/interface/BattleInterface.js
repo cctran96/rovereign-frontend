@@ -189,8 +189,28 @@ const BattleInterface = () => {
     }
 
     // Skill buff
-    const playerSkillBuff = (skill, playerObi, callback) => {
-
+    const playerSkillBuff = (skill, playerObj, callback) => {
+        const mp = skill.effect.mp
+        const buff = skill.effect.buff
+        const buffedStat = Object.keys(buff)[0]
+        let newPlayerObj = playerObj ? playerObj : player
+        newPlayerObj = {
+            ...newPlayerObj, 
+            stats: {...newPlayerObj.stats, 
+                current_mp: newPlayerObj.stats.current_mp - mp,
+                [buffedStat]: Math.floor(newPlayerObj.stats[buffedStat] * (1 + buff[buffedStat]/100))
+            }
+        }
+        dispatch(changeDisplay(true))
+        setTimeout(() => {
+            dispatch(setCurrentCharacter(newPlayerObj))
+            setDialogue({[player.name]: `You used ${formatName(skill.name)}, increasing your ${buffedStat.toUpperCase()} by ${buff[buffedStat]}%.`})
+            setTimeout(() => {
+                dispatch(setUseItem(null))
+                typeof callback === "function" && setTimeout(() => callback(newPlayerObj), 300)
+                dispatch(changeDisplay(false))
+            }, 700)
+        }, 1000)
     }
 
     // Using item
@@ -244,13 +264,17 @@ const BattleInterface = () => {
         const skill = skills.find(s => s.name === name)
         storeSelectedMove(null)
         if (skill.effect.attack) {
-            if (stats.spd >= monster.spd) {
+            if (stats.spd > monster.spd) {
                 playerSkillAttack(skill, null, monsterAttack)
             } else {
                 monsterAttack(null, (playerObj) => playerSkillAttack(skill, playerObj))
             }
         } else if (skill.effect.buff) {
-            return
+            if (stats.spd > monster.spd) {
+                playerSkillBuff(skill, null, monsterAttack)
+            } else {
+                monsterAttack(null, (playerObj) => playerSkillBuff(skill, playerObj))
+            }
         }
     }
 

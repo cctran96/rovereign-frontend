@@ -51,9 +51,9 @@ const CreateCharacter = ({showCreation, setShowCreation, characters}) => {
             <motion.div className="creation-container" variants={creationBoxVar} animate={showCreation ? "show" : "hidden"}>
                 <h1>Choose a class</h1>
                 <div className="class-names">
-                    <h2 id="magician" onClick={handleCharacterChange}>Wizard</h2>
-                    <h2 id="spearman" onClick={handleCharacterChange}>Knight</h2>
-                    <h2 id="hunter" onClick={handleCharacterChange}>Archer</h2>
+                    <h2 style={{color: role === "magician" ? "purple" : "black"}} id="magician" onClick={handleCharacterChange}>Wizard</h2>
+                    <h2 style={{color: role === "spearman" ? "gold" : "black"}} id="spearman" onClick={handleCharacterChange}>Knight</h2>
+                    <h2 style={{color: role === "hunter" ? "green" : "black"}} id="hunter" onClick={handleCharacterChange}>Archer</h2>
                 </div>
                 <div className="creation-info">
                     {   sprite ? 

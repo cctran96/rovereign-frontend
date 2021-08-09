@@ -64,9 +64,9 @@ const CraftingMenu = ({show, setShow, items, itemImage, formatName, player, oldC
                         <h2>Crafting Table</h2>
                         <div className="crafting-container">
                             <div className="crafting-options">
-                                <p onClick={() => switchTier(1)}>Tier 1</p>
-                                <p onClick={() => switchTier(2)}>Tier 2</p>
-                                <p onClick={() => switchTier(3)}>Tier 3</p>
+                                <p style={{color: tier === 1 ? "#CD634C" : "black"}} onClick={() => switchTier(1)}>Tier 1</p>
+                                <p style={{color: tier === 2 ? "silver" : "black"}} onClick={() => switchTier(2)}>Tier 2</p>
+                                <p style={{color: tier === 3 ? "gold" : "black"}} onClick={() => switchTier(3)}>Tier 3</p>
                             </div>
                             <div className="crafting-table">
                                 <div className="crafting-items">
