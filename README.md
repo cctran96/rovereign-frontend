@@ -1,6 +1,7 @@
 # Rovereign
 
-Rovereign is an RPG game where users can explore different maps, fight monsters using a turn-based battle system, and level up/upgrade their character.
+Rovereign is an RPG game where users can explore different maps, fight monsters using a turn-based battle system, and level up/upgrade their character. </br>
+[Video Demo](https://www.loom.com/share/dfca4e8bc98d426c8321da734ba33828)
 
 ## Technologies
 
@@ -15,14 +16,14 @@ Built with a React [frontend](https://github.com/cctran96/rovereign-frontend) an
  ```sh
    git clone https://github.com/cctran96/rovereign-backend.git
    ```
-2. Install the NPM packages and gems, respectively.
+2. Install the NPM packages and gems in the respective directory.
  ```sh
-   npm install
+   yarn install
    ```
  ```sh
    bundle install
    ```
-3. This application uses PostgreSQL. To set that up, click [here](https://www.digitalocean.com/community/tutorials/how-to-use-postgresql-with-your-ruby-on-rails-application-on-macos)
+3. This application uses PostgreSQL. To view a tutorial, click [here](https://www.digitalocean.com/community/tutorials/how-to-use-postgresql-with-your-ruby-on-rails-application-on-macos)
 
 4. In the backend repository, create and seed the database.
   ```sh
@@ -32,7 +33,7 @@ Built with a React [frontend](https://github.com/cctran96/rovereign-frontend) an
 
 5. Start the servers, respectively.
  ```sh
-   npm start
+   yarn start
    ```
  ```sh
    rails start
