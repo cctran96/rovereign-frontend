@@ -15,14 +15,22 @@ Built with a React [frontend](https://github.com/cctran96/rovereign-frontend) an
  ```sh
    git clone https://github.com/cctran96/rovereign-backend.git
    ```
-2. Install the NPM packages and gems, respectively
+2. Install the NPM packages and gems, respectively.
  ```sh
    npm install
    ```
  ```sh
    bundle install
    ```
-3. Start the servers
+3. This application uses PostgreSQL. To set that up, click [here](https://www.digitalocean.com/community/tutorials/how-to-use-postgresql-with-your-ruby-on-rails-application-on-macos)
+
+4. In the backend repository, create and seed the database.
+  ```sh
+  rails db:migrate
+  rails db:seed
+  ```
+
+5. Start the servers, respectively.
  ```sh
    npm start
    ```
