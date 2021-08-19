@@ -16,7 +16,7 @@ Built with a React [frontend](https://github.com/cctran96/rovereign-frontend) an
  ```sh
    git clone https://github.com/cctran96/rovereign-backend.git
    ```
-2. Install the NPM packages and gems in the respective directory.
+2. Install the node packages and gems in the respective directory.
  ```sh
    yarn install
    ```
